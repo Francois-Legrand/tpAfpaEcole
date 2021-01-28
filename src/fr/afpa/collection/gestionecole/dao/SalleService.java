@@ -27,9 +27,6 @@ public class SalleService implements IDao<Salle> {
 		return salles.remove(salle);
 	}
 	
-
-	
-
 	@Override
 	public boolean update(Salle salle) {
 		
@@ -43,7 +40,6 @@ public class SalleService implements IDao<Salle> {
 		return false;
 	}
 
-	
 	
 /*
 	public boolean update(int id, Salle salle) {

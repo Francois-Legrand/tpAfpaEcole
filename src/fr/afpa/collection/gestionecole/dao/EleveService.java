@@ -1,13 +1,16 @@
 package fr.afpa.collection.gestionecole.dao;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import fr.afpa.collection.gestionecole.metier.Adresse;
 import fr.afpa.collection.gestionecole.metier.Eleve;
 import fr.afpa.collection.gestionecole.metier.Salle;
 import fr.francois.ecole.bdd.ConnectionUtils;
@@ -15,14 +18,10 @@ import fr.francois.ecole.bdd.ConnectionUtils;
 public class EleveService implements IDao<Eleve> {
 
 	Map<Integer, Eleve> listeEleves = new HashMap<Integer, Eleve>();
-
+	List<Eleve> listeEleve = new ArrayList<Eleve>();
 	@Override
 	public boolean create(Eleve eleve) {
-//		this.nom = nom;
-//		this.prenom = prenom;
-//		this.dateNaissance = dateNaissance;
-//		this.age = age;
-//		this.adresse = adresse;
+
 		try {
 			Connection connection = ConnectionUtils.getMyConnection();
 
@@ -33,7 +32,9 @@ public class EleveService implements IDao<Eleve> {
 					+ eleve.getAdresse()+"')";
 			
 			int rowCount = statement.executeUpdate(sqlIntoEleve);
-			System.out.println("Row Count affected = " + rowCount);
+			
+			System.out.println("Insert eleve Count affected = " + rowCount);
+			
 			return true;
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -47,19 +48,75 @@ public class EleveService implements IDao<Eleve> {
 
 	@Override
 	public boolean delete(Eleve eleve) {
-		return listeEleves.remove(eleve.getId(), eleve);
+		try {
+			Connection connection = ConnectionUtils.getMyConnection();
+
+			Statement statement = connection.createStatement();
+
+			String sqlDeleteEleve = "Delete from eleves where id = '"+eleve.getId()+"'";
+			
+			int rowCount = statement.executeUpdate(sqlDeleteEleve);
+			
+			System.out.println("Delete eleve Count affected = " + rowCount);
+			
+			
+			return true;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 
 	@Override
 	public boolean update(Eleve eleve) {
-		listeEleves.put(eleve.getId(), eleve);
+		try {
+			Connection connection = ConnectionUtils.getMyConnection();
+
+			Statement statement = connection.createStatement();
+
+			String sqlUpdateEleve = "Update eleves Set nom ='"+eleve.getNom()+"', prenom ='"+eleve.getPrenom()+"', age = '"+eleve.getAge()+"' Where id = '"+eleve.getId()+"'";
+			System.out.println(sqlUpdateEleve);
+			int rowCount = statement.executeUpdate(sqlUpdateEleve);
+			
+			System.out.println("update eleve Count affected = " + rowCount);
+			
+			
+			return true;
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public Eleve findById(int id) {
-		listeEleves.get(id);
-		return null;
+		
+			try {
+				Connection connection = ConnectionUtils.getMyConnection();
+
+				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				String sqlFindId = "Select nom, prenom, age From eleves Where id ='"+id+"'";
+				System.out.println(sqlFindId);
+
+return null;
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		
 	}
 
 	public Eleve findByFirstName(String fn) {
@@ -73,12 +130,59 @@ public class EleveService implements IDao<Eleve> {
 
 	@Override
 	public List<Eleve> findAll() {
-		return listeEleves.values().stream().collect(Collectors.toList());
+		
+		try {
+			
+			Connection connection = ConnectionUtils.getMyConnection();
+
+			Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String sql = "Select nom, prenom, age From eleves";
+			
+			// Execute SQL statement returns a ResultSet object.
+			Eleve eleve = null;
+					ResultSet rs = statement.executeQuery(sql);
+					while (rs.next()) {
+						
+						eleve = new Eleve(null, null, null, 0, null);
+						
+						eleve.setId(eleve.getId()-1);
+			            String nom = rs.getString(2);
+			            
+			            eleve.setNom(nom);
+			            
+			            // Then get the value of column 1.
+			            String prenom = rs.getString(1);
+			            eleve.setPrenom(prenom);
+			            
+			            int age = rs.getInt(3);
+			            
+			            eleve.setAge(age);
+			            
+			            listeEleve.add(eleve);
+			            
+			        }
+			        // Close connection.
+			        connection.close();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return listeEleve;
+		
 	}
 
 	@Override
 	public String toString() {
-		return "listeEleves=" + listeEleves + "]";
+		return "EleveService [listeEleves=" + listeEleves + ", listeEleve=" + listeEleve + ", findAll()=" + findAll()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+				+ "]";
 	}
+
+	
+
+	
 
 }

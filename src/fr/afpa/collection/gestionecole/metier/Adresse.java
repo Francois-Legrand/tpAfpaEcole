@@ -6,6 +6,8 @@ package fr.afpa.collection.gestionecole.metier;
 
  * */
 public class Adresse {
+	private static int compteur ;
+	int id ; 
 	int numRue ;
 	String nomRue  ; 
 	int codePostale ; 
@@ -19,7 +21,26 @@ public class Adresse {
 		this.codePostale = codePostale;
 		this.ville = ville;
 		this.pays = pays;
+		this.id = compteur++ ;
 	}
+
+	
+	public static int getCompteur() {
+		return compteur;
+	}
+
+	public static void setCompteur(int compteur) {
+		Adresse.compteur = compteur;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 
 	public int getNumRue() {
 		return numRue;

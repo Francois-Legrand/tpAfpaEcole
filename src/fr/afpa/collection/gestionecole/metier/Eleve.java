@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Eleve {
 	private static int compteur ;
-	int id ; 
+	int id; 
 	String nom ; 
 	String prenom ; 
 	LocalDate dateNaissance ; 
@@ -64,9 +64,12 @@ public class Eleve {
 	}
 	@Override
 	public String toString() {
-		return "Eleve [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", dateNaissance=" + dateNaissance + ", age="
-				+ age + ", adresse=" + adresse.toString() + "]\n";
-	} 
+		return "Eleve Id=" + getId() + ", getNom()=" + getNom() + ", getPrenom()=" + getPrenom()
+				+ ", getDateNaissance()=" + getDateNaissance() + ", getAge()=" + getAge() + ", getAdresse()="
+				+ getAdresse() + "]\n";
+	}
+	
+	
 
 	
 	
