@@ -8,11 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
-import fr.afpa.collection.gestionecole.metier.Adresse;
 import fr.afpa.collection.gestionecole.metier.Eleve;
-import fr.afpa.collection.gestionecole.metier.Salle;
 import fr.francois.ecole.bdd.ConnectionUtils;
 
 public class EleveService implements IDao<Eleve> {
@@ -52,13 +48,12 @@ public class EleveService implements IDao<Eleve> {
 			Connection connection = ConnectionUtils.getMyConnection();
 
 			Statement statement = connection.createStatement();
-
-			String sqlDeleteEleve = "Delete from eleves where id = '"+eleve.getId()+"'";
+			
+			String sqlDeleteEleve = "Delete from eleves where prenom = '"+eleve.getPrenom()+"'";
 			
 			int rowCount = statement.executeUpdate(sqlDeleteEleve);
 			
 			System.out.println("Delete eleve Count affected = " + rowCount);
-			
 			
 			return true;
 		} catch (ClassNotFoundException e) {
@@ -79,12 +74,11 @@ public class EleveService implements IDao<Eleve> {
 
 			Statement statement = connection.createStatement();
 
-			String sqlUpdateEleve = "Update eleves Set nom ='"+eleve.getNom()+"', prenom ='"+eleve.getPrenom()+"', age = '"+eleve.getAge()+"' Where id = '"+eleve.getId()+"'";
+			String sqlUpdateEleve = "Update eleves Set nom ='"+eleve.getNom()+"', prenom ='"+eleve.getPrenom()+"', age = '"+eleve.getAge()+"' Where prenom = '"+eleve.getPrenom()+"'";
 			System.out.println(sqlUpdateEleve);
 			int rowCount = statement.executeUpdate(sqlUpdateEleve);
 			
 			System.out.println("update eleve Count affected = " + rowCount);
-			
 			
 			return true;
 		} catch (ClassNotFoundException e) {
@@ -100,25 +94,54 @@ public class EleveService implements IDao<Eleve> {
 	@Override
 	public Eleve findById(int id) {
 		
-			try {
-				Connection connection = ConnectionUtils.getMyConnection();
+		try {
+			Connection connection = ConnectionUtils.getMyConnection();
 
-				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-				String sqlFindId = "Select nom, prenom, age From eleves Where id ='"+id+"'";
-				System.out.println(sqlFindId);
-
-return null;
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String sqlFindId = "Select id, nom, prenom, age From eleves Where id ='"+id+"'";
+			
+			System.out.println(sqlFindId);
+			
+			// Execute SQL statement returns a ResultSet object.
+					ResultSet rs = statement.executeQuery(sqlFindId);
+					
+					while (rs.next()) {
+			            // Get value of column 2
+						
+						int idEleve = rs.getInt(1);
+						
+			            String nom = rs.getString(2);
+			 
+			            // Then get the value of column 1.
+			            
+			            String prenom = rs.getString(3);
+			            
+			            
+			            int age = rs.getInt(4);
+			            
+			            System.out.println("--------------------");
+			            System.out.println("id:" + id);
+			            System.out.println("prenom:" + prenom);
+			            System.out.println("nom:" + nom);
+			            
+			            Eleve eleveId = new Eleve(nom, prenom, null, age, null, id);
+			            
+			            return eleveId;
+			        }
+			 
+			        // Close connection.
+			        connection.close();
+			        
 			return null;
-		
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
-
 	public Eleve findByFirstName(String fn) {
 		for (Eleve e : findAll()) {
 			if (e.getPrenom() == fn) {
@@ -145,7 +168,7 @@ return null;
 						
 						eleve = new Eleve(null, null, null, 0, null);
 						
-						eleve.setId(eleve.getId()-1);
+						
 			            String nom = rs.getString(2);
 			            
 			            eleve.setNom(nom);

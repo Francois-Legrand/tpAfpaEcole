@@ -1,12 +1,14 @@
 package fr.afpa.collection.gestionecole.metier;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /*
  * D�finir une classe Adresse  avec les attributs suivants: 
  * numRue , nomRue , codePostale, Ville , Pays.
 
  * */
 public class Adresse {
-	private static int compteur ;
+	private static final AtomicInteger count = new AtomicInteger(0); 
 	int id ; 
 	int numRue ;
 	String nomRue  ; 
@@ -21,17 +23,9 @@ public class Adresse {
 		this.codePostale = codePostale;
 		this.ville = ville;
 		this.pays = pays;
-		this.id = compteur++ ;
+		this.id = count.incrementAndGet();
 	}
 
-	
-	public static int getCompteur() {
-		return compteur;
-	}
-
-	public static void setCompteur(int compteur) {
-		Adresse.compteur = compteur;
-	}
 
 	public int getId() {
 		return id;

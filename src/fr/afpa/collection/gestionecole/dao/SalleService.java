@@ -23,7 +23,7 @@ public class SalleService implements IDao<Salle> {
 
 	@Override
 	public boolean delete(Salle salle) {
-		Salle.compteur-- ;
+		//Salle.compteur-- ;
 		return salles.remove(salle);
 	}
 	

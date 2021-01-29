@@ -1,18 +1,19 @@
 package fr.afpa.collection.gestionecole.metier;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class Salle {
 
-public	static int compteur = 0; 
-	 int id ; 
+    private static final AtomicInteger count = new AtomicInteger(0); 
+	int id ; 
 	String code ;
 	String libelle;
 	
 	public Salle(String code, String libelle) {
 		this.code = code;
 		this.libelle = libelle;
-		this.id = compteur++ ;
+		this.id = count.incrementAndGet();
 	}
-
 
 	public int getId() {
 		return id;

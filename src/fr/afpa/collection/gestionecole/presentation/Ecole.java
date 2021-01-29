@@ -12,8 +12,8 @@ public class Ecole {
 
 	public static void main(String[] args) {
 
-	// le code au dessus est �quivalent � 
-	SalleService salleService = new SalleService() ;
+	// le code au dessus est equivalent 
+	//SalleService salleService = new SalleService() ;
 	
 //	salleService.create(new Salle("mat","Mathématiques"));
 //	salleService.create(new Salle("Phy","Physique"));
@@ -38,40 +38,30 @@ public class Ecole {
 //		System.out.println("La salle n'existe pas");
 //	}
 	//salleService.afficheListeSalles();
-	// le code au dessus est �quivalent � 
+	// le code au dessus est equivalent
+		
 	EleveService eleveService = new EleveService() ;
 	
-	LocalDate dateNaissance = LocalDate.of(1998, 01, 22) ;
-	int age = Period.between(dateNaissance, LocalDate.now()).getYears() ;
+//	LocalDate dateNaissance = LocalDate.of(1998, 01, 22) ;
+//	int age = Period.between(dateNaissance, LocalDate.now()).getYears() ;
+//	
+//	eleveService.create(new Eleve("bouhie", "jean", dateNaissance, age, 
+//			new Adresse(12,"Oliviers", 75001,"Paris", "France") )) ; 
 	
-	eleveService.create(new Eleve("Dupont", "François", dateNaissance, age, 
-			new Adresse(12,"Oliviers", 75001,"Paris", "France") )) ; 
+	Eleve eleveId = eleveService.findById(7);
 	
-	dateNaissance = LocalDate.of(2008, 01, 22) ;
-	age = Period.between(dateNaissance, LocalDate.now()).getYears() ;
+	System.out.println(eleveId);
 	
-	eleveService.create(new Eleve("Duhamel", "Francis", dateNaissance, age, 
-			new Adresse(12,"Oliviers", 75001,"Paris", "France") )) ; 
+	//eleveService.delete(eleveId);
 	
+	eleveId.setAge(11);
+	
+	eleveService.update(eleveId);
 
-	dateNaissance = LocalDate.of(1990, 01, 22) ;
-	age = Period.between(dateNaissance, LocalDate.now()).getYears() ;
-	
-	eleveService.findById(4);
-	
-	//System.out.println(eleveId);
-	
-	//eleveService.delete(eveleId);
-	
-	//eveleId.setAge(11);
-	
-	//eleveService.update(eveleId.);
-	
-	
 	System.out.println(eleveService.findAll());
 	
 	
 	
-	}
+}
 
 }
