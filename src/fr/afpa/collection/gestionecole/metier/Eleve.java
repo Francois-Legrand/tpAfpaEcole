@@ -9,14 +9,12 @@ public class Eleve {
 	String nom ; 
 	String prenom ; 
 	LocalDate dateNaissance ; 
-	int adresseId;
 	
-	public Eleve(String nom, String prenom, LocalDate dateNaissance, int adresseId) {
+	public Eleve(String nom, String prenom, LocalDate dateNaissance) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
 		this.dateNaissance = dateNaissance;
-		this.adresseId = adresseId;
 		
 	}
 	
@@ -45,17 +43,10 @@ public class Eleve {
 		this.dateNaissance = dateNaissance;
 	}
 	
-	public int getAdresse() {
-		return adresseId;
-	}
-	public void setAdresse(int adresseId) {
-		this.adresseId = adresseId;
-	}
 	@Override
 	public String toString() {
 		return "getNom " + getNom() + ", getPrenom " + getPrenom()
-				+ ", getDateNaissance " + getDateNaissance() + ", getAdresse "
-				+ getAdresse() + "]\n";
+				+ ", getDateNaissance " + getDateNaissance() + ", getAdresse ]\n";
 	}
 	
 	

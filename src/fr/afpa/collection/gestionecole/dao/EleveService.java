@@ -23,8 +23,9 @@ public class EleveService implements IDao<Eleve> {
 
 			Statement statement = connection.createStatement();
 
-			String sqlIntoEleve = "Insert into eleve (nom, prenom, dateNaissance, adresseId) values ('"
-					+ eleve.getPrenom() + "','" + eleve.getNom() + "','" + eleve.getDateNaissance() + "','" + eleve.getAdresse() + "')";
+			String sqlIntoEleve = "Insert into eleve (nom, prenom, dateNaissance) values ('"
+					+ eleve.getPrenom() + "','" + eleve.getNom() + "','" + eleve.getDateNaissance()+"')";
+			
 			
 			int rowCount = statement.executeUpdate(sqlIntoEleve);
 			
@@ -94,14 +95,14 @@ public class EleveService implements IDao<Eleve> {
 
 	@Override
 	public Eleve findById(int id) {
-		Eleve eleveId = new Eleve(null, null, null, id);
+		Eleve eleveId = new Eleve(null, null, null);
 		try {
 			Connection connection = ConnectionUtils.getMyConnection();
 
 			Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY);
 			String sqlFindId = "Select id, nom, prenom From eleve Where id ='" + id + "'";
-
+			
 			System.out.println(sqlFindId);
 
 			// Execute SQL statement returns a ResultSet object.
@@ -165,7 +166,7 @@ public class EleveService implements IDao<Eleve> {
 			ResultSet rs = statement.executeQuery(sql);
 			while (rs.next()) {
 
-				eleve = new Eleve(null, null, null, 0);
+				eleve = new Eleve(null, null, null);
 
 				// Then get the value of column 1.
 				int id = rs.getInt(1);

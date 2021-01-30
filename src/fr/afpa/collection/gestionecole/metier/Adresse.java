@@ -15,15 +15,27 @@ public class Adresse {
 	int codePostale ; 
 	String ville  ; 
 	String pays ;
+	int eleveId ; 
 	
-	public Adresse(int numRue, String nomRue, int codePostale, String ville, String pays) {
+	public Adresse(int numRue, String nomRue, int codePostale, String ville, String pays, int eleveId) {
 		super();
 		this.numRue = numRue;
 		this.nomRue = nomRue;
 		this.codePostale = codePostale;
 		this.ville = ville;
 		this.pays = pays;
+		this.eleveId = eleveId;
 		this.id = count.incrementAndGet();
+	}
+
+
+	public int getEleveId() {
+		return eleveId;
+	}
+
+
+	public void setEleveId(int eleveId) {
+		this.eleveId = eleveId;
 	}
 
 

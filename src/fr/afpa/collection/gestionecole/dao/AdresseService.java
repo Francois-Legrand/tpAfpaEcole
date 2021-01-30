@@ -19,13 +19,7 @@ public class AdresseService implements IDao<Adresse>{
 	@Override
 	public boolean create(Adresse adresse) {
 		try {
-//			private static final AtomicInteger count = new AtomicInteger(0); 
-//			int id ; 
-//			int numRue ;
-//			String nomRue  ; 
-//			int codePostale ; 
-//			String ville  ; 
-//			String pays ;
+
 			Connection connection = ConnectionUtils.getMyConnection();
 
 			Statement statement = connection.createStatement();
@@ -33,7 +27,12 @@ public class AdresseService implements IDao<Adresse>{
 			String sqlIntoAdresse = "Insert into adresse (numRue, nomRue, codePostale, ville, pays) values ('"
 					+ adresse.getNumRue() + "','" + adresse.getNomRue() + "','" + adresse.getCodePostale() + "','"
 					+ adresse.getVille() + "','" + adresse.getPays() + "')";
+			
+			String sqlIntoEleveAdresse = "Insert into eleveAdresse (eleve_id, adresse_id) values ('"
+					+ adresse.getEleveId() + "','" + adresse.getId() +"')";
+			
 			int rowCount = statement.executeUpdate(sqlIntoAdresse);
+			rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
 			
 			System.out.println("Insert adresse Count affected = " + rowCount);
 
@@ -83,6 +82,7 @@ public class AdresseService implements IDao<Adresse>{
 			String sqlUpdateAdresse = "Update adresse Set nomRue ='" + adresse.getNomRue() + "', numRue ='" + adresse.getNumRue()
 					+ "', codePostale = '" + adresse.getCodePostale()+ "', ville = '" + adresse.getVille()+ "', pays = '" +adresse.getPays()+"' Where nomRue = '" + adresse.getNomRue() + "'";
 			System.out.println(sqlUpdateAdresse);
+			
 			int rowCount = statement.executeUpdate(sqlUpdateAdresse);
 
 			System.out.println("update adresse Count affected = " + rowCount);
@@ -100,7 +100,7 @@ public class AdresseService implements IDao<Adresse>{
 
 	@Override
 	public Adresse findById(int id) {
-		Adresse adresseId = new Adresse(id, null, id, null, null);
+		Adresse adresseId = new Adresse(id, null, id, null, null, id);
 		try {
 			Connection connection = ConnectionUtils.getMyConnection();
 
@@ -162,7 +162,7 @@ public class AdresseService implements IDao<Adresse>{
 			ResultSet rs = statement.executeQuery(sql);
 			while (rs.next()) {
 
-				adresse = new Adresse(0, null, 0, null, null);
+				adresse = new Adresse(0, null, 0, null, null, 0);
 
 				// Then get the value of column 1.
 				int id = rs.getInt(1);

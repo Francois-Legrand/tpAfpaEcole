@@ -1,5 +1,8 @@
 package fr.afpa.collection.gestionecole.presentation;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -9,6 +12,7 @@ import fr.afpa.collection.gestionecole.dao.SalleService;
 import fr.afpa.collection.gestionecole.metier.Adresse;
 import fr.afpa.collection.gestionecole.metier.Eleve;
 import fr.afpa.collection.gestionecole.metier.Salle;
+import fr.francois.ecole.bdd.ConnectionUtils;
 
 public class Ecole {
 
@@ -45,23 +49,34 @@ public class Ecole {
 		EleveService eleveService = new EleveService();
 		AdresseService adresseService = new AdresseService();
 
-//		adresseService.create(new Adresse(12, "Oliviers", 75001, "Paris", "France"));
-//		
-//		Adresse adresseId = adresseService.findById(1);
-//		
-//		int adresseDeJean = adresseId.getId();
-//		
-//		LocalDate dateNaissance = LocalDate.of(1998, 01, 22);
-//		
-//		eleveService.create(new Eleve("bouhie", "jean", dateNaissance, adresseDeJean));
+		LocalDate dateNaissance = LocalDate.of(1998, 01, 22);
+
+		eleveService.create(new Eleve("françois", "Legrand", dateNaissance));
+		eleveService.create(new Eleve("françois", "Legrand", dateNaissance));
+		
+		Eleve francois = eleveService.findById(1);
+		int francoisId = francois.getId();
+		
+		Eleve jean = eleveService.findById(2);
+		int jeanId = jean.getId();
+		
+		adresseService.create(new Adresse(1, "Oliviers", 75001, "Paris", "France", francoisId));
+
+		adresseService.create(new Adresse(2, "Oliviers", 75001, "Paris", "France", francoisId));
+		
+		adresseService.create(new Adresse(3, "Oliviers", 75001, "Paris", "France", jeanId));
+
+		adresseService.create(new Adresse(4, "Oliviers", 75001, "Paris", "France", jeanId));
+
 	
-		Eleve eleveId = eleveService.findById(1);
-		
-		eleveId.setNom("bouhie");
-		eleveId.setPrenom("Jean");
-		
-		eleveService.update(eleveId);
-		
+
+//		Eleve eleveId = eleveService.findById(1);
+//		
+//		eleveId.setNom("bouhie");
+//		eleveId.setPrenom("Jean");
+//		
+//		eleveService.update(eleveId);
+
 //	LocalDate dateNaissance = LocalDate.of(1998, 01, 22) ;
 //	
 //	int age = Period.between(dateNaissance, LocalDate.now()).getYears() ;
