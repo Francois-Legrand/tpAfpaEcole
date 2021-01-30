@@ -29,14 +29,14 @@ public class InsertDataExample {
 		
 		//String sqlUpadate = "Update Employee Set emp_Name = 'François' Where emp_Id = '7369'";
 		
-		String sqlSelect = "Select * from Employee";
+		String sqlSelect = "Select * from eleve";
 		
 		// Execute statement
 		// executeUpdate(String) using for Insert, Update, Delete statement.
 
-		String sqlDeleteSalle = "Delete from salles Where id = '1'";
+		//String sqlDeleteSalle = "Delete from salles Where id = '1'";
 		
-		int rowCount = statement.executeUpdate(sqlDeleteSalle);
+		int rowCount = statement.executeUpdate(sqlSelect);
 	
 		
 		//int rowCount2 = statement.executeUpdate(sqlIntoEleve);

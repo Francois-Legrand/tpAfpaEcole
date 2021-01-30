@@ -15,7 +15,7 @@ public class SalleService implements IDao<Salle> {
 
 	public List<Salle> salles = new ArrayList<Salle>() ;
 	
-	// Les methodes de CRUD : Create , Read Update  et delete
+	// Les methodes de CRUD : Create , Read Update et delete
 	@Override
 	public boolean create(Salle salle) {
 		return salles.add(salle);
@@ -40,7 +40,6 @@ public class SalleService implements IDao<Salle> {
 		return false;
 	}
 
-	
 /*
 	public boolean update(int id, Salle salle) {
 	salles.set(id, salle) ;
@@ -53,8 +52,6 @@ public class SalleService implements IDao<Salle> {
 		return false;
 	}
 	*/
-
-
 	@Override
 	public Salle findById(int id) {
 		for(Salle s: salles) {

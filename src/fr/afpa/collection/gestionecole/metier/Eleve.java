@@ -9,26 +9,17 @@ public class Eleve {
 	String nom ; 
 	String prenom ; 
 	LocalDate dateNaissance ; 
-	int age; 
-	Adresse adresse;
+	int adresseId;
 	
-	public Eleve(String nom, String prenom, LocalDate dateNaissance, int age, Adresse adresse, int id) {
+	public Eleve(String nom, String prenom, LocalDate dateNaissance, int adresseId) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
 		this.dateNaissance = dateNaissance;
-		this.age = age;
-		this.adresse = adresse;
-		this.id = id;
+		this.adresseId = adresseId;
+		
 	}
-	public Eleve(String nom, String prenom, LocalDate dateNaissance, int age, Adresse adresse) {
-		super();
-		this.nom = nom;
-		this.prenom = prenom;
-		this.dateNaissance = dateNaissance;
-		this.age = age;
-		this.adresse = adresse;
-	}
+	
 	public int getId() {
 		return id;
 	}
@@ -53,27 +44,19 @@ public class Eleve {
 	public void setDateNaissance(LocalDate dateNaissance) {
 		this.dateNaissance = dateNaissance;
 	}
-	public int getAge() {
-		return age;
+	
+	public int getAdresse() {
+		return adresseId;
 	}
-	public void setAge(int age) {
-		this.age = age;
-	}
-	public Adresse getAdresse() {
-		return adresse;
-	}
-	public void setAdresse(Adresse adresse) {
-		this.adresse = adresse;
+	public void setAdresse(int adresseId) {
+		this.adresseId = adresseId;
 	}
 	@Override
 	public String toString() {
-		return "getNom" + getNom() + ", getPrenom" + getPrenom()
-				+ ", getDateNaissance" + getDateNaissance() + ", getAge" + getAge() + ", getAdresse"
+		return "getNom " + getNom() + ", getPrenom " + getPrenom()
+				+ ", getDateNaissance " + getDateNaissance() + ", getAdresse "
 				+ getAdresse() + "]\n";
 	}
-	
-	
-
 	
 	
 }
