@@ -4,12 +4,17 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import fr.afpa.collection.gestionecole.metier.Eleve;
 import fr.francois.ecole.bdd.ConnectionUtils;
+
 public class EleveService implements IDao<Eleve> {
 
 	Map<Integer, Eleve> listeEleves = new HashMap<Integer, Eleve>();
@@ -23,12 +28,11 @@ public class EleveService implements IDao<Eleve> {
 
 			Statement statement = connection.createStatement();
 
-			String sqlIntoEleve = "Insert into eleve (nom, prenom, dateNaissance) values ('"
-					+ eleve.getPrenom() + "','" + eleve.getNom() + "','" + eleve.getDateNaissance()+"')";
-			
-			
+			String sqlIntoEleve = "Insert into eleve (nom, prenom, dateNaissance) values ('" + eleve.getPrenom() + "','"
+					+ eleve.getNom() + "','" + eleve.getDateNaissance() + "')";
+
 			int rowCount = statement.executeUpdate(sqlIntoEleve);
-			
+
 			System.out.println("Insert eleve Count affected = " + rowCount);
 
 			return true;
@@ -74,10 +78,11 @@ public class EleveService implements IDao<Eleve> {
 
 			Statement statement = connection.createStatement();
 
-			String sqlUpdateEleve = "Update eleve Set nom ='" + eleve.getNom() + "', prenom ='" + eleve.getPrenom() + "' Where id = '" + eleve.getId() + "'";
-			
+			String sqlUpdateEleve = "Update eleve Set nom ='" + eleve.getNom() + "', prenom ='" + eleve.getPrenom()
+					+ "' Where id = '" + eleve.getId() + "'";
+
 			System.out.println(sqlUpdateEleve);
-			
+
 			int rowCount = statement.executeUpdate(sqlUpdateEleve);
 
 			System.out.println("update eleve Count affected = " + rowCount);
@@ -102,7 +107,7 @@ public class EleveService implements IDao<Eleve> {
 			Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY);
 			String sqlFindId = "Select id, nom, prenom From eleve Where id ='" + id + "'";
-			
+
 			System.out.println(sqlFindId);
 
 			// Execute SQL statement returns a ResultSet object.
@@ -119,8 +124,7 @@ public class EleveService implements IDao<Eleve> {
 
 				String prenom = rs.getString(3);
 
-
-				eleveId.setNom(nom); 
+				eleveId.setNom(nom);
 				eleveId.setPrenom(prenom);
 				eleveId.setId(id1);
 
@@ -159,7 +163,8 @@ public class EleveService implements IDao<Eleve> {
 
 			Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY);
-			String sql = "Select id, nom, prenom, From eleve";
+			
+			String sql = "Select id, nom, prenom, dateNaissance from eleve";
 
 			// Execute SQL statement returns a ResultSet object.
 			Eleve eleve = null;
@@ -170,17 +175,22 @@ public class EleveService implements IDao<Eleve> {
 
 				// Then get the value of column 1.
 				int id = rs.getInt(1);
-				
+
 				eleve.setId(id);
-				
+
 				String prenom = rs.getString(2);
-				
+
 				eleve.setPrenom(prenom);
-				
+
 				String nom = rs.getString(3);
 
 				eleve.setNom(nom);
+
+				Date dateNaissance = rs.getDate(4);
+				//convert To LocalDate
+				LocalDate localDate = Instant.ofEpochMilli(dateNaissance.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
 				
+				eleve.setDateNaissance(localDate);
 				
 				listeEleve.add(eleve);
 
