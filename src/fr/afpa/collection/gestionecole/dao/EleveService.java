@@ -145,13 +145,20 @@ public class EleveService implements IDao<Eleve> {
 		return eleveId;
 	}
 
-	public Eleve findByFirstName(String fn) {
+	public Eleve findByFirstName(String fbn) {
+		
+		Eleve eleve = new Eleve(0, null, null, null);
+		System.out.println(fbn);
 		for (Eleve e : findAll()) {
-			if (e.getPrenom() == fn) {
-				return e;
+			
+			if (fbn.equals(e.getPrenom())) {
+				eleve.setId(e.getId());
+				eleve.setPrenom(e.getPrenom());
+				eleve.setNom(e.getNom());
+				eleve.setDateNaissance(e.getDateNaissance());
 			}
 		}
-		return null;
+		return eleve;
 	}
 
 	@Override
@@ -178,11 +185,11 @@ public class EleveService implements IDao<Eleve> {
 
 				eleve.setId(id);
 
-				String prenom = rs.getString(2);
+				String prenom = rs.getString(3);
 
 				eleve.setPrenom(prenom);
 
-				String nom = rs.getString(3);
+				String nom = rs.getString(2);
 
 				eleve.setNom(nom);
 

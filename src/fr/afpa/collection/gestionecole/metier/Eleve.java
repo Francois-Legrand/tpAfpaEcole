@@ -15,9 +15,14 @@ public class Eleve {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.dateNaissance = dateNaissance;
-		
 	}
-	
+	public Eleve(int id, String nom, String prenom, LocalDate dateNaissance) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.dateNaissance = dateNaissance;
+	}
 	public int getId() {
 		return id;
 	}
@@ -42,12 +47,13 @@ public class Eleve {
 	public void setDateNaissance(LocalDate dateNaissance) {
 		this.dateNaissance = dateNaissance;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "getNom " + getNom() + ", getPrenom " + getPrenom()
-				+ ", getDateNaissance " + getDateNaissance() + ", getAdresse ]\n";
+		return "Eleve [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", dateNaissance=" + dateNaissance + "]\n";
 	}
+	
+	
 	
 	
 }
