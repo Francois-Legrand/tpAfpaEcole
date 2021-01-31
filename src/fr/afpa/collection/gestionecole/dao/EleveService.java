@@ -34,7 +34,6 @@ public class EleveService implements IDao<Eleve> {
 			
 			String sqlSelectId = "SELECT MAX(id) AS max_id FROM eleve";
 			
-			System.out.println(sqlSelectId);
 			
 			Statement statement2 = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			ResultSet rs = statement2.executeQuery(sqlSelectId);
@@ -61,7 +60,23 @@ public class EleveService implements IDao<Eleve> {
 					System.out.println("Insert eleve Count affected = " + rowCount);
 					rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
 				}
-				
+			}
+				if(eleve.getSalleId() != 0) {
+					if(eleveId == 0) {
+						eleveId += 1;
+						String sqlIntoEleveAdresse = "Insert into eleveSalle (eleveId, salleId) values ('"
+								+ eleveId + "','" + eleve.getSalleId() +"')";
+						
+						System.out.println("Insert eleve Count affected = " + rowCount);
+						rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
+					}else {
+						
+						String sqlIntoEleveAdresse = "Insert into eleveSalle (eleveId, salleId) values ('"
+								+ eleveId + "','" + eleve.getSalleId() +"')";
+						
+						System.out.println("Insert eleve Count affected = " + rowCount);
+						rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
+					}
 				
 			}
 			

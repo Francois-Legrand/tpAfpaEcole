@@ -9,6 +9,7 @@ public class Salle {
 	String code ;
 	String libelle;
 	int eleveId;
+	
 	public Salle(String code, String libelle) {
 		this.code = code;
 		this.libelle = libelle;

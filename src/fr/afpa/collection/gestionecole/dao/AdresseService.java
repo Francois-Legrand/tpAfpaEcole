@@ -12,10 +12,10 @@ import fr.afpa.collection.gestionecole.metier.Adresse;
 
 import fr.francois.ecole.bdd.ConnectionUtils;
 
-public class AdresseService implements IDao<Adresse>{
-	
-	public List<Adresse> listeAdresse = new ArrayList<Adresse>() ;
-	
+public class AdresseService implements IDao<Adresse> {
+
+	public List<Adresse> listeAdresse = new ArrayList<Adresse>();
+
 	@Override
 	public boolean create(Adresse adresse) {
 		try {
@@ -23,37 +23,46 @@ public class AdresseService implements IDao<Adresse>{
 			Connection connection = ConnectionUtils.getMyConnection();
 
 			Statement statement = connection.createStatement();
-			
-			
+
 			String sqlIntoAdresse = "Insert into adresse (numRue, nomRue, codePostale, ville, pays) values ('"
 					+ adresse.getNumRue() + "','" + adresse.getNomRue() + "','" + adresse.getCodePostale() + "','"
 					+ adresse.getVille() + "','" + adresse.getPays() + "')";
-			
+
 			int rowCount = statement.executeUpdate(sqlIntoAdresse);
-			
+
 			String sqlSelectId = "SELECT MAX(id) AS max_id FROM adresse";
-			System.out.println(sqlSelectId);
 			
+			Statement statement2 = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 			
-			
-			Statement statement2 = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			ResultSet rs = statement2.executeQuery(sqlSelectId);
+			
 			int adresseId = 0;
 			while (rs.next()) {
-				
-	            adresseId = rs.getInt("max_id");
-	 
-	        }
-			
-			if(adresse.getEleveId() !=0) {
-				adresseId += 1;
-				
-				String sqlIntoEleveAdresse = "Insert into eleveAdresse (eleve_id, adresse_id) values ('"
-						+ adresse.getEleveId() + "','" + adresseId +"')";
-				
-				rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
+
+				adresseId = rs.getInt("max_id");
+
 			}
-			
+
+			if (adresse.getEleveId() != 0) {
+				if (adresseId == 0) {
+					
+					adresseId += 1;
+
+					String sqlIntoEleveAdresse = "Insert into eleveAdresse (eleve_id, adresse_id) values ('"
+							+ adresse.getEleveId() + "','" + adresseId + "')";
+
+					rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
+				} else {
+
+					String sqlIntoEleveAdresse = "Insert into eleveAdresse (eleve_id, adresse_id) values ('"
+							+ adresse.getEleveId() + "','" + adresseId + "')";
+
+					rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
+				}
+
+			}
+
 			System.out.println("Insert adresse Count affected = " + rowCount);
 
 			return true;
@@ -99,10 +108,12 @@ public class AdresseService implements IDao<Adresse>{
 
 			Statement statement = connection.createStatement();
 
-			String sqlUpdateAdresse = "Update adresse Set nomRue ='" + adresse.getNomRue() + "', numRue ='" + adresse.getNumRue()
-					+ "', codePostale = '" + adresse.getCodePostale()+ "', ville = '" + adresse.getVille()+ "', pays = '" +adresse.getPays()+"' Where nomRue = '" + adresse.getNomRue() + "'";
+			String sqlUpdateAdresse = "Update adresse Set nomRue ='" + adresse.getNomRue() + "', numRue ='"
+					+ adresse.getNumRue() + "', codePostale = '" + adresse.getCodePostale() + "', ville = '"
+					+ adresse.getVille() + "', pays = '" + adresse.getPays() + "' Where nomRue = '"
+					+ adresse.getNomRue() + "'";
 			System.out.println(sqlUpdateAdresse);
-			
+
 			int rowCount = statement.executeUpdate(sqlUpdateAdresse);
 
 			System.out.println("update adresse Count affected = " + rowCount);
@@ -126,7 +137,8 @@ public class AdresseService implements IDao<Adresse>{
 
 			Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY);
-			String sqlFindId = "Select id, nomRue, numRue, codePostale, ville, pays From adresse Where id ='" + id + "'";
+			String sqlFindId = "Select id, nomRue, numRue, codePostale, ville, pays From adresse Where id ='" + id
+					+ "'";
 
 			System.out.println(sqlFindId);
 
@@ -142,8 +154,8 @@ public class AdresseService implements IDao<Adresse>{
 				int codePostal = rs.getInt(4);
 				String ville = rs.getString(5);
 				String pays = rs.getString(6);
-				
-				adresseId.setNomRue(nomRue); 
+
+				adresseId.setNomRue(nomRue);
 				adresseId.setNumRue(numRue);
 				adresseId.setCodePostale(codePostal);
 				adresseId.setVille(ville);
@@ -191,14 +203,14 @@ public class AdresseService implements IDao<Adresse>{
 				int codePostal = rs.getInt(4);
 				String ville = rs.getString(5);
 				String pays = rs.getString(6);
-				
+
 				adresse.setId(id);
 				adresse.setNomRue(nomRue);
 				adresse.setNumRue(numRue);
 				adresse.setCodePostale(codePostal);
 				adresse.setVille(ville);
 				adresse.setPays(pays);
-				
+
 				listeAdresse.add(adresse);
 
 			}
@@ -213,5 +225,5 @@ public class AdresseService implements IDao<Adresse>{
 		}
 		return listeAdresse;
 	}
-	
+
 }

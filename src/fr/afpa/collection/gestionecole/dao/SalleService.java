@@ -32,12 +32,37 @@ public class SalleService implements IDao<Salle> {
 
 			int rowCount = statement.executeUpdate(sqlIntoSalle);
 
+			String sqlSelectId = "SELECT MAX(id) AS max_id FROM salle";
+
+			Statement statement2 = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+
+			ResultSet rs = statement2.executeQuery(sqlSelectId);
+			
+			int salleId = 0;
+			while (rs.next()) {
+
+				salleId = rs.getInt("max_id");
+
+			}
 			
 			if (salle.getEleveId() != 0) {
-
-				String sqlIntoEleveSalle = "Insert into eleveSalle (eleveId, salleId) values ('" + salle.getEleveId()
-						+ "','" + salle.getId() + "')";
-				rowCount += statement.executeUpdate(sqlIntoEleveSalle);
+				if(salleId == 0) {
+					salleId += 1;
+					
+					String sqlIntoEleveSalle = "Insert into eleveSalle (eleveId, salleId) values ('" + salle.getEleveId()
+					+ "','" + salleId + "')";
+					
+					rowCount += statement.executeUpdate(sqlIntoEleveSalle);
+			
+				}else {
+					
+					String sqlIntoEleveSalle = "Insert into eleveSalle (eleveId, salleId) values ('" + salle.getEleveId()
+					+ "','" + salleId + "')";
+					
+					rowCount += statement.executeUpdate(sqlIntoEleveSalle);
+				}
+				
 			}
 			System.out.println("Insert salle Count affected = " + rowCount);
 

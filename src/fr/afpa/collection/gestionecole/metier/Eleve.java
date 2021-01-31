@@ -27,6 +27,16 @@ public class Eleve {
 		this.adresseId = adresseId;
 		this.id = count.incrementAndGet();
 	}
+	
+	public Eleve(String nom, String prenom, LocalDate dateNaissance, int adresseId, int salleId) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+		this.dateNaissance = dateNaissance;
+		this.salleId = salleId;
+		this.adresseId = adresseId;
+		this.id = count.incrementAndGet();
+	}
 	public Eleve(int id, String nom, String prenom, LocalDate dateNaissance) {
 		super();
 		this.id = id;
