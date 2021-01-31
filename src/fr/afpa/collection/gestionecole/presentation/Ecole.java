@@ -21,25 +21,30 @@ public class Ecole {
 		
 		EleveService eleveService = new EleveService();
 		AdresseService adresseService = new AdresseService();
-
+		SalleService salleService = new SalleService();
+		
 		LocalDate dateNaissance = LocalDate.of(1998, 01, 22);
 
+		
 //		 eleveService.create(new Eleve("jean", "guy", dateNaissance));
 //		 eleveService.create(new Eleve("marine", "duporge", dateNaissance));
 //		 
 //		 eleveService.create(new Eleve("gilbert", "montygny", dateNaissance));
 //		 eleveService.create(new Eleve("raphel", "guyzgan", dateNaissance));
 		 
-//		Eleve eleveId2 = eleveService.findById(3);
-//		int eleveId = eleveId2.getId();
-//
+		Eleve eleveId3 = eleveService.findById(3);
+		int eleveId = eleveId3.getId();
+		
+		salleService.create(new Salle("math", "Salle de math", eleveId));
+		
+		salleService.create(new Salle("hitoire", "Salle dhistoire", eleveId));
 //		
 //		System.out.println(eleveId2);
 		//int jeanId = jean.getId();
 
-		Eleve eleveFindByFirstName = eleveService.findByFirstName("raphel");
+		//Eleve eleveFindByFirstName = eleveService.findByFirstName("raphel");
 		
-		System.out.println(eleveFindByFirstName);
+		//System.out.println(eleveFindByFirstName);
 		// adresseService.create(new Adresse(1, "Oliviers", 75001, "Paris", "France",
 		// francoisId));
 

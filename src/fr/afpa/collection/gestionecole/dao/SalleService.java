@@ -29,9 +29,13 @@ public class SalleService implements IDao<Salle> {
 
 			String sqlIntoSalle = "Insert into salle (code, libelle) values ('" + salle.getCode() + "','"
 					+ salle.getLibelle() + "')";
-
+			
+			String sqlIntoEleveSalle = "Insert into elevesalle (eleveId, salleId) values ('"
+					+ salle.getEleveId() + "','" + salle.getId() +"')";
+			
 			int rowCount = statement.executeUpdate(sqlIntoSalle);
-
+			
+			rowCount += statement.executeUpdate(sqlIntoEleveSalle);
 			System.out.println("Insert salle Count affected = " + rowCount);
 
 			return true;
@@ -53,7 +57,8 @@ public class SalleService implements IDao<Salle> {
 			Statement statement = connection.createStatement();
 
 			String sqlDeleteSalle = "Delete from salle where code = '" + salle.getCode() + "'";
-
+			
+			
 			int rowCount = statement.executeUpdate(sqlDeleteSalle);
 
 			System.out.println("Delete salle Count affected = " + rowCount);
@@ -108,6 +113,7 @@ public class SalleService implements IDao<Salle> {
 					ResultSet.CONCUR_READ_ONLY);
 			String sqlFindId = "Select id, code, libelle From salle Where id ='" + id + "'";
 
+			
 			System.out.println(sqlFindId);
 
 			// Execute SQL statement returns a ResultSet object.

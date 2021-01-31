@@ -8,13 +8,25 @@ public class Salle {
 	int id ; 
 	String code ;
 	String libelle;
-	
+	int eleveId;
 	public Salle(String code, String libelle) {
 		this.code = code;
 		this.libelle = libelle;
 		this.id = count.incrementAndGet();
 	}
-
+	public Salle(String code, String libelle, int eleveId) {
+		this.code = code;
+		this.libelle = libelle;
+		this.eleveId = eleveId;
+		this.id = count.incrementAndGet();
+	}
+	
+	public int getEleveId() {
+		return eleveId;
+	}
+	public void setEleveId(int eleveId) {
+		this.eleveId = eleveId;
+	}
 	public int getId() {
 		return id;
 	}
