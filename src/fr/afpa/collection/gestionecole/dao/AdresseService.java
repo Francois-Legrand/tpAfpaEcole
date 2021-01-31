@@ -1,15 +1,15 @@
 package fr.afpa.collection.gestionecole.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import fr.afpa.collection.gestionecole.metier.Adresse;
-import fr.afpa.collection.gestionecole.metier.Eleve;
+
 import fr.francois.ecole.bdd.ConnectionUtils;
 
 public class AdresseService implements IDao<Adresse>{
@@ -23,16 +23,36 @@ public class AdresseService implements IDao<Adresse>{
 			Connection connection = ConnectionUtils.getMyConnection();
 
 			Statement statement = connection.createStatement();
-
+			
+			
 			String sqlIntoAdresse = "Insert into adresse (numRue, nomRue, codePostale, ville, pays) values ('"
 					+ adresse.getNumRue() + "','" + adresse.getNomRue() + "','" + adresse.getCodePostale() + "','"
 					+ adresse.getVille() + "','" + adresse.getPays() + "')";
 			
-			String sqlIntoEleveAdresse = "Insert into eleveAdresse (eleve_id, adresse_id) values ('"
-					+ adresse.getEleveId() + "','" + adresse.getId() +"')";
-			
 			int rowCount = statement.executeUpdate(sqlIntoAdresse);
-			rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
+			
+			String sqlSelectId = "SELECT MAX(id) AS max_id FROM adresse";
+			System.out.println(sqlSelectId);
+			
+			
+			
+			Statement statement2 = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet rs = statement2.executeQuery(sqlSelectId);
+			int adresseId = 0;
+			while (rs.next()) {
+				
+	            adresseId = rs.getInt("max_id");
+	 
+	        }
+			
+			if(adresse.getEleveId() !=0) {
+				adresseId += 1;
+				
+				String sqlIntoEleveAdresse = "Insert into eleveAdresse (eleve_id, adresse_id) values ('"
+						+ adresse.getEleveId() + "','" + adresseId +"')";
+				
+				rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
+			}
 			
 			System.out.println("Insert adresse Count affected = " + rowCount);
 

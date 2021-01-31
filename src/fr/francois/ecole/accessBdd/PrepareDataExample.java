@@ -14,7 +14,7 @@ public class PrepareDataExample {
 		Connection connection = ConnectionUtils.getMyConnection();
 
 // Create a SQL statement with two parameters (?)
-		String sql = "Select id, nom, prenom from eleves where prenom like ? and id = ? ";
+		String sql = "Select id, nom, prenom from ecole where prenom like ? and id = ? ";
 
 // Create a PreparedStatement object.
 		PreparedStatement pstm = connection.prepareStatement(sql);

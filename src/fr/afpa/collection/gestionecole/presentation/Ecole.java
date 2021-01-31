@@ -24,7 +24,19 @@ public class Ecole {
 		SalleService salleService = new SalleService();
 		
 		LocalDate dateNaissance = LocalDate.of(1998, 01, 22);
-
+		
+		Adresse adresseId1 = adresseService.findById(1);
+		int adresseId = adresseId1.getId();
+		
+		
+		eleveService.create(new Eleve("jean", "guy", dateNaissance, adresseId));
+		//Eleve eleveId1 = eleveService.findById(1);
+		//int eleveId = eleveId1.getId();
+		
+		//System.out.println(eleveId);
+		
+		//adresseService.create(new Adresse(6, "Oliviers", 75001, "Paris", "France"));
+		
 		
 //		 eleveService.create(new Eleve("jean", "guy", dateNaissance));
 //		 eleveService.create(new Eleve("marine", "duporge", dateNaissance));
@@ -32,21 +44,41 @@ public class Ecole {
 //		 eleveService.create(new Eleve("gilbert", "montygny", dateNaissance));
 //		 eleveService.create(new Eleve("raphel", "guyzgan", dateNaissance));
 		 
-		Eleve eleveId3 = eleveService.findById(3);
-		int eleveId = eleveId3.getId();
+		//Eleve eleveId3 = eleveService.findById(3);
+		//int eleveId = eleveId3.getId();
 		
-		salleService.create(new Salle("math", "Salle de math", eleveId));
+		//salleService.create(new Salle("math", "Salle de math"));
+		//Salle salleId6 = salleService.findById(6);
+		//int salleId = salleId6.getId();
 		
-		salleService.create(new Salle("hitoire", "Salle dhistoire", eleveId));
+		//eleveService.create(new Eleve("Frederic", "guon", dateNaissance, salleId));
+		
+		//eleveService.create(new Eleve("Frederic", "guon", dateNaissance, salleId));
+		
+		
+//		Salle salleId1 = salleService.findById(1);
+//		int salleId = salleId1.getId();
 //		
+//		System.out.println(salleId1);
+//		
+//		
+//		eleveService.create(new Eleve("jean", "guon", dateNaissance, salleId));
+		
+		//eleveService.create(new Eleve("Frederic", "guon", dateNaissance, salleId));
+		
 //		System.out.println(eleveId2);
 		//int jeanId = jean.getId();
-
+		
+		//Eleve eleveId10 = eleveService.findById(12);
+		//int eleveId = eleveId10.getId();
+		
+		//salleService.create(new Salle("hitoire", "Salle dhistoire", eleveId));
+		
 		//Eleve eleveFindByFirstName = eleveService.findByFirstName("raphel");
 		
 		//System.out.println(eleveFindByFirstName);
-		// adresseService.create(new Adresse(1, "Oliviers", 75001, "Paris", "France",
-		// francoisId));
+		 //adresseService.create(new Adresse(13, "Oliviers", 75001, "Paris", "France",
+		 //eleveId));
 
 		// adresseService.create(new Adresse(2, "Oliviers", 75001, "Paris", "France",
 		// francoisId));

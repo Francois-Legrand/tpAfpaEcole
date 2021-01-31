@@ -17,6 +17,15 @@ public class Adresse {
 	String pays ;
 	int eleveId ; 
 	
+	public Adresse(int numRue, String nomRue, int codePostale, String ville, String pays) {
+		super();
+		this.numRue = numRue;
+		this.nomRue = nomRue;
+		this.codePostale = codePostale;
+		this.ville = ville;
+		this.pays = pays;
+	}
+
 	public Adresse(int numRue, String nomRue, int codePostale, String ville, String pays, int eleveId) {
 		super();
 		this.numRue = numRue;
@@ -25,7 +34,6 @@ public class Adresse {
 		this.ville = ville;
 		this.pays = pays;
 		this.eleveId = eleveId;
-		this.id = count.incrementAndGet();
 	}
 
 

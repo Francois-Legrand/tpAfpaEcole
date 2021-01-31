@@ -9,12 +9,23 @@ public class Eleve {
 	String nom ; 
 	String prenom ; 
 	LocalDate dateNaissance ; 
+	int salleId;
+	int adresseId;
 	
 	public Eleve(String nom, String prenom, LocalDate dateNaissance) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
 		this.dateNaissance = dateNaissance;
+		
+	}
+	public Eleve(String nom, String prenom, LocalDate dateNaissance, int adresseId) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+		this.dateNaissance = dateNaissance;
+		this.adresseId = adresseId;
+		this.id = count.incrementAndGet();
 	}
 	public Eleve(int id, String nom, String prenom, LocalDate dateNaissance) {
 		super();
@@ -22,6 +33,29 @@ public class Eleve {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.dateNaissance = dateNaissance;
+	}
+	
+	public Eleve(int id, String nom, String prenom, LocalDate dateNaissance, int salleId, int adresseId) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.dateNaissance = dateNaissance;
+		this.adresseId = adresseId;
+		this.salleId = salleId;
+	}
+	
+	public int getSalleId() {
+		return salleId;
+	}
+	public void setSalleId(int salleId) {
+		this.salleId = salleId;
+	}
+	public int getAdresseId() {
+		return adresseId;
+	}
+	public void setAdresseId(int adresseId) {
+		this.adresseId = adresseId;
 	}
 	public int getId() {
 		return id;

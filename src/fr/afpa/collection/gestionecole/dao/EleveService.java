@@ -30,9 +30,42 @@ public class EleveService implements IDao<Eleve> {
 
 			String sqlIntoEleve = "Insert into eleve (nom, prenom, dateNaissance) values ('" + eleve.getPrenom() + "','"
 					+ eleve.getNom() + "','" + eleve.getDateNaissance() + "')";
-
 			int rowCount = statement.executeUpdate(sqlIntoEleve);
-
+			
+			String sqlSelectId = "SELECT MAX(id) AS max_id FROM eleve";
+			
+			System.out.println(sqlSelectId);
+			
+			Statement statement2 = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet rs = statement2.executeQuery(sqlSelectId);
+			int eleveId = 0;
+			while (rs.next()) {
+				
+	            eleveId = rs.getInt("max_id");
+	 
+	        }
+			
+			if(eleve.getAdresseId() != 0) {
+				if(eleveId == 0) {
+					eleveId += 1;
+					String sqlIntoEleveAdresse = "Insert into eleveAdresse (eleve_id, adresse_id) values ('"
+							+ eleveId + "','" + eleve.getAdresseId() +"')";
+					
+					System.out.println("Insert eleve Count affected = " + rowCount);
+					rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
+				}else {
+					
+					String sqlIntoEleveAdresse = "Insert into eleveAdresse (eleve_id, adresse_id) values ('"
+							+ eleveId + "','" + eleve.getAdresseId() +"')";
+					
+					System.out.println("Insert eleve Count affected = " + rowCount);
+					rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
+				}
+				
+				
+			}
+			
+			
 			System.out.println("Insert eleve Count affected = " + rowCount);
 
 			return true;
