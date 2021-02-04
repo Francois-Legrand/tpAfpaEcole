@@ -8,7 +8,7 @@ public class Eleve {
 	public int id; 
 	String nom ; 
 	String prenom ; 
-	LocalDate dateNaissance ; 
+	LocalDate dateNaissance; 
 	int salleId;
 	int adresseId;
 	

@@ -84,7 +84,7 @@ public class SalleService implements IDao<Salle> {
 
 			Statement statement = connection.createStatement();
 
-			String sqlDeleteSalle = "Delete from salle where code = '" + salle.getCode() + "'";
+			String sqlDeleteSalle = "Delete from salle where code = '" + salle.getId() + "'";
 
 			int rowCount = statement.executeUpdate(sqlDeleteSalle);
 
@@ -104,7 +104,6 @@ public class SalleService implements IDao<Salle> {
 
 	@Override
 	public boolean update(Salle salle) {
-
 		try {
 			Connection connection = ConnectionUtils.getMyConnection();
 

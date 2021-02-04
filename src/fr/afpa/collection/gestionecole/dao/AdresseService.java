@@ -83,7 +83,7 @@ public class AdresseService implements IDao<Adresse> {
 
 			Statement statement = connection.createStatement();
 
-			String sqlDeleteAdresse = "Delete from adresse where nomRue = '" + adresse.getNomRue() + "'";
+			String sqlDeleteAdresse = "Delete from adresse where id = '" + adresse.getId() + "'";
 
 			int rowCount = statement.executeUpdate(sqlDeleteAdresse);
 
@@ -131,6 +131,7 @@ public class AdresseService implements IDao<Adresse> {
 
 	@Override
 	public Adresse findById(int id) {
+		
 		Adresse adresseId = new Adresse(id, null, id, null, null, id);
 		try {
 			Connection connection = ConnectionUtils.getMyConnection();
@@ -146,7 +147,7 @@ public class AdresseService implements IDao<Adresse> {
 			ResultSet rs = statement.executeQuery(sqlFindId);
 
 			while (rs.next()) {
-				// Get value of column 2
+				
 
 				int id1 = rs.getInt(1);
 				String nomRue = rs.getString(2);

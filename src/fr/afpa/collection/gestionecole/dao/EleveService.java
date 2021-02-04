@@ -34,7 +34,6 @@ public class EleveService implements IDao<Eleve> {
 			
 			String sqlSelectId = "SELECT MAX(id) AS max_id FROM eleve";
 			
-			
 			Statement statement2 = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			ResultSet rs = statement2.executeQuery(sqlSelectId);
 			int eleveId = 0;
@@ -101,10 +100,16 @@ public class EleveService implements IDao<Eleve> {
 
 			Statement statement = connection.createStatement();
 
-			String sqlDeleteEleve = "Delete from eleve where prenom = '" + eleve.getPrenom() + "'";
+			String sqlDeleteEleve = "Delete from eleve where id = '" + eleve.getId() + "'";
 
+			String sqlDeleteEleveAdresse = "Delete from eleveAdresse where eleve_id = '" + eleve.getId() + "'";
+			
+			System.out.println(eleve.getId());
+			
 			int rowCount = statement.executeUpdate(sqlDeleteEleve);
-
+			
+			rowCount += statement.executeUpdate(sqlDeleteEleveAdresse);
+			
 			System.out.println("Delete eleve Count affected = " + rowCount);
 
 			return true;
@@ -154,7 +159,7 @@ public class EleveService implements IDao<Eleve> {
 
 			Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY);
-			String sqlFindId = "Select id, nom, prenom From eleve Where id ='" + id + "'";
+			String sqlFindId = "Select id, nom, prenom, dateNaissance From eleve Where id ='" + id + "'";
 
 			System.out.println(sqlFindId);
 
@@ -173,9 +178,15 @@ public class EleveService implements IDao<Eleve> {
 				String prenom = rs.getString(3);
 
 				eleveId.setNom(nom);
+				
 				eleveId.setPrenom(prenom);
+				
 				eleveId.setId(id1);
 
+				LocalDate dateNaissance = rs.getDate(4).toLocalDate();
+				
+				eleveId.setDateNaissance(dateNaissance);
+				
 				return eleveId;
 			}
 
@@ -200,6 +211,7 @@ public class EleveService implements IDao<Eleve> {
 		for (Eleve e : findAll()) {
 			
 			if (fbn.equals(e.getPrenom())) {
+				
 				eleve.setId(e.getId());
 				eleve.setPrenom(e.getPrenom());
 				eleve.setNom(e.getNom());
@@ -221,6 +233,10 @@ public class EleveService implements IDao<Eleve> {
 			
 			String sql = "Select id, nom, prenom, dateNaissance from eleve";
 
+			
+			//SELECT adresse.nomRue FROM adresse INNER JOIN eleveadresse ON adresse_id = adresse.id where eleveadresse.eleve_id = 1
+			
+			
 			// Execute SQL statement returns a ResultSet object.
 			Eleve eleve = null;
 			ResultSet rs = statement.executeQuery(sql);
