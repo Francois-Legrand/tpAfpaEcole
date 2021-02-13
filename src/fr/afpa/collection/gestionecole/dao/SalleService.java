@@ -200,7 +200,7 @@ public class SalleService implements IDao<Salle> {
 			Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY);
 
-			String sql = "Select id, code, libelle, from salle";
+			String sql = "Select id, code, libelle from salle";
 
 			// Execute SQL statement returns a ResultSet object.
 			Salle salle = null;

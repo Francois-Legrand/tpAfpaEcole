@@ -27,14 +27,9 @@ public class EleveService implements IDao<Eleve> {
 			Connection connection = ConnectionUtils.getMyConnection();
 
 			Statement statement = connection.createStatement();
-
-			String sqlIntoEleve = "Insert into eleve (nom, prenom, dateNaissance) values ('" + eleve.getPrenom() + "','"
-					+ eleve.getNom() + "','" + eleve.getDateNaissance() + "')";
-			int rowCount = statement.executeUpdate(sqlIntoEleve);
-			
 			String sqlSelectId = "SELECT MAX(id) AS max_id FROM eleve";
-			
 			Statement statement2 = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			
 			ResultSet rs = statement2.executeQuery(sqlSelectId);
 			int eleveId = 0;
 			while (rs.next()) {
@@ -43,45 +38,22 @@ public class EleveService implements IDao<Eleve> {
 	 
 	        }
 			
-			if(eleve.getAdresseId() != 0) {
-				if(eleveId == 0) {
-					eleveId += 1;
-					String sqlIntoEleveAdresse = "Insert into eleveAdresse (eleve_id, adresse_id) values ('"
-							+ eleveId + "','" + eleve.getAdresseId() +"')";
-					
-					System.out.println("Insert eleve Count affected = " + rowCount);
-					rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
-				}else {
-					
-					String sqlIntoEleveAdresse = "Insert into eleveAdresse (eleve_id, adresse_id) values ('"
-							+ eleveId + "','" + eleve.getAdresseId() +"')";
-					
-					System.out.println("Insert eleve Count affected = " + rowCount);
-					rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
-				}
-			}
-				if(eleve.getSalleId() != 0) {
-					if(eleveId == 0) {
-						eleveId += 1;
-						String sqlIntoEleveAdresse = "Insert into eleveSalle (eleveId, salleId) values ('"
-								+ eleveId + "','" + eleve.getSalleId() +"')";
-						
-						System.out.println("Insert eleve Count affected = " + rowCount);
-						rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
-					}else {
-						
-						String sqlIntoEleveAdresse = "Insert into eleveSalle (eleveId, salleId) values ('"
-								+ eleveId + "','" + eleve.getSalleId() +"')";
-						
-						System.out.println("Insert eleve Count affected = " + rowCount);
-						rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
-					}
+				eleveId +=1;
+				String sqlIntoEleve = "Insert into eleve (nom, prenom, dateNaissance) values ('" + eleve.getPrenom() + "','"
+						+ eleve.getNom() + "','" + eleve.getDateNaissance() + "')";
 				
-			}
-			
-			
-			System.out.println("Insert eleve Count affected = " + rowCount);
+				String sqlIntoEleveAdresse = "Insert into eleveAdresse (eleve_id, adresse_id) values ('"
+						+ eleveId + "','" + eleve.getAdresseId() +"')";
+				
+				String sqlIntoEleveSalle = "Insert into eleveSalle (eleveId, salleId) values ('"
+						+ eleveId + "','" + eleve.getSalleId() +"')";
+				
+				int rowCount = statement.executeUpdate(sqlIntoEleve);
+				rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
+				rowCount += statement.executeUpdate(sqlIntoEleveSalle);
+				System.out.println("Insert eleve Count affected = " + rowCount);
 
+			
 			return true;
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
