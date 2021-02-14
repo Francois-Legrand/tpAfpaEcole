@@ -91,11 +91,13 @@ public class Eleve {
 	public void setDateNaissance(LocalDate dateNaissance) {
 		this.dateNaissance = dateNaissance;
 	}
-
 	@Override
 	public String toString() {
-		return "Eleve [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", dateNaissance=" + dateNaissance + "]\n";
+		return "Eleve [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", dateNaissance=" + dateNaissance
+				+ ", salleId=" + salleId + ", adresseId=" + adresseId + "]";
 	}
+
+	
 	
 	
 	

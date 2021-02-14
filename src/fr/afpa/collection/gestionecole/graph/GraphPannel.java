@@ -29,6 +29,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -38,12 +40,15 @@ import java.awt.event.ActionEvent;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class GraphPannel {
 	private JFrame frame;
@@ -206,18 +211,30 @@ public class GraphPannel {
 		scrollPane.setBounds(300, 66, 435, 321);
 		pnlCard1.add(scrollPane);
 		
+		JComboBox comboBoxSalle = new JComboBox(codeListe);
+		comboBoxSalle.setBounds(130, 168, 149, 20);
+		pnlCard1.add(comboBoxSalle);
+		
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int rowIndex = table.getSelectedRow();
+				inputNom.setText(model.getValueAt(rowIndex, 1).toString());
+				inputPrenom.setText(model.getValueAt(rowIndex, 2).toString());
+				System.out.println(model.getValueAt(rowIndex, 3).toString());
+				//inputDateNaissance.setDate((Date) model.getValueAt(rowIndex, 3));
+				System.out.println(model.getValueAt(rowIndex, 4));
+				comboBoxAdress.setSelectedItem(model.getValueAt(rowIndex, 4));
+				comboBoxSalle.setSelectedItem(model.getValueAt(rowIndex, 5));
+			}
+		});
 		model = new DefaultTableModel();
 		Object[] column = {"Id", "Nom", "Prénom", "DateNaissance","Adresse", "Salle"};
 		final Object[] row = new Object[6];
 		model.setColumnIdentifiers(column);
 		table.setModel(model);
 		scrollPane.setViewportView(table);
-		
-		
-		JComboBox comboBoxSalle = new JComboBox(codeListe);
-		comboBoxSalle.setBounds(130, 168, 149, 20);
-		pnlCard1.add(comboBoxSalle);
 		
 		JButton boutonValider = new JButton("Add");
 		boutonValider.setBounds(190, 199, 89, 23);
@@ -227,10 +244,11 @@ public class GraphPannel {
 		int number2 = eleveService.findAll().size();
 		
 		if(eleveService.findAll().size() == 0) {
-			
+			System.out.println(eleveService.findAll().size());
 		}else {
 			
 			for(int i = 0; i < number2; i++) {
+				System.out.println(eleveService.findAll().get(i).getId());
 				
 				try {
 					Connection connection2 = ConnectionUtils.getMyConnection();
@@ -290,40 +308,75 @@ public class GraphPannel {
 			public void actionPerformed(ActionEvent e) {
 				
 				EleveService eleveService = new EleveService();
-				if(row[0] == null) {
+//				if(row[0] == null) {
+//					
+//					row[0] = 1;
+//				}else {
+//					id = Integer.parseInt(row[0].toString())+1;
+//					
+//				}
+				
+				try {
+					Connection connection = ConnectionUtils.getMyConnection();
+
+					String sqlSelectId = "SELECT auto_increment AS NEXT_ID FROM `information_schema`.`tables` WHERE table_name = \"eleve\" AND table_schema = \"ecole\"";
 					
-					row[0] = 1;
-				}else {
-					id = Integer.parseInt(row[0].toString())+1;
+					Statement statement2 = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 					
+					ResultSet rs = statement2.executeQuery(sqlSelectId);
+					
+					int eleveId = 0;
+					while (rs.next()) {
+						
+					    eleveId = rs.getInt("NEXT_ID");
+ 
+					}
+					
+					nom = inputNom.getText();
+					prenom = inputPrenom.getText();
+					
+					Date dateNaissance = inputDateNaissance.getDate();
+					
+					LocalDate localDate = Instant.ofEpochMilli(dateNaissance.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+					
+					Object item = comboBoxAdress.getSelectedItem();
+					int value = ((ComboItem)item).getValue();
+					
+					eleveService.create(new Eleve(prenom, nom, localDate, value, comboBoxSalle.getSelectedIndex()+1));
+					
+					row[0] = eleveId;
+					row[1] = nom;
+					row[2] = prenom;
+					row[3] = localDate.toString();
+					row[4] = comboBoxAdress.getSelectedItem();
+					row[5] = comboBoxSalle.getSelectedItem();
+					model.addRow(row);
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-				nom = inputNom.getText();
-				prenom = inputPrenom.getText();
-				
-				Date dateNaissance = inputDateNaissance.getDate();
-				
-				LocalDate localDate = Instant.ofEpochMilli(dateNaissance.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
-				
-				
-				Object item = comboBoxAdress.getSelectedItem();
-				int value = ((ComboItem)item).getValue();
-				System.out.println(value);
-				
-				eleveService.create(new Eleve(prenom, nom, localDate, value, comboBoxSalle.getSelectedIndex()+1));
-				row[0] = id;
-				row[1] = nom;
-				row[2] = prenom;
-				row[3] = localDate.toString();
-				row[4] = comboBoxAdress.getSelectedItem();
-				row[5] = comboBoxSalle.getSelectedItem();
-				model.addRow(row);
 			}
 		});
 		pnlCard1.add(boutonValider);
 		
-		
-		
 		JButton btnNewButton = new JButton("Delete");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int rowIndex = table.getSelectedRow();
+				System.out.println(rowIndex);
+				Eleve deleteEleve = eleveService.findById(Integer.parseInt(table.getModel().getValueAt(rowIndex, 0).toString()));
+					deleteEleve.setId(Integer.parseInt(table.getModel().getValueAt(rowIndex, 0).toString()));
+					System.out.println(deleteEleve.getId()+" id de leleve");
+					
+					model.removeRow(rowIndex);
+					eleveService.delete(deleteEleve);
+					JOptionPane.showMessageDialog(null, "Delete success");
+				
+			}
+		});
 		btnNewButton.setBounds(190, 247, 89, 23);
 		pnlCard1.add(btnNewButton);
 		
@@ -331,6 +384,38 @@ public class GraphPannel {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				Object item = comboBoxAdress.getSelectedItem();
+				int value = ((ComboItem)item).getValue();
+				Date dateNaissance = inputDateNaissance.getDate();
+				LocalDate localDate = Instant.ofEpochMilli(dateNaissance.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+				int rowIndex = table.getSelectedRow();
+				int columnIndex = table.getSelectedColumn();
+				Eleve eleve = eleveService.findById(Integer.parseInt(table.getModel().getValueAt(rowIndex, 0).toString()));
+				System.out.println(eleve);
+				eleve = new Eleve(eleve.getId(),inputPrenom.getText(), inputNom.getText(), localDate, comboBoxSalle.getSelectedIndex()+1,value );
+				System.out.println(value+"id de ladresse");
+				
+//				eleve.setNom(table.getModel().getValueAt(rowIndex, 1).toString());
+//				System.out.println(table.getModel().getValueAt(rowIndex, 1).toString());
+//				eleve.setPrenom(table.getModel().getValueAt(rowIndex, 2).toString());
+//				table.getModel().getValueAt(rowIndex, 3);
+//				String dateNaissanceToString = table.getModel().getValueAt(rowIndex, 3).toString();
+//				LocalDate localDate = LocalDate.parse(dateNaissanceToString);
+				
+				
+				//eleve.setDateNaissance(localDate);
+				
+				//table.getModel().getValueAt(rowIndex, 1).toString();
+				
+				eleveService.update(eleve);
+				model.setValueAt(inputNom.getText(), rowIndex, 1);
+				model.setValueAt(inputPrenom.getText(), rowIndex, 2);
+				Date dateN = inputDateNaissance.getDate();
+				LocalDate localDat = Instant.ofEpochMilli(dateN.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+				model.setValueAt(localDat, rowIndex, 3);
+				model.setValueAt(comboBoxAdress.getSelectedItem(), rowIndex, 4);
+				model.setValueAt(comboBoxSalle.getSelectedItem(), rowIndex, 5);
+				JOptionPane.showMessageDialog(null, "Update success");
 			}
 		});
 		btnNewButton_1.setBounds(190, 291, 89, 23);
@@ -390,6 +475,11 @@ public class GraphPannel {
 		inputLibelle.setColumns(10);
 		
 		JButton boutonValider2 = new JButton("Valider");
+		boutonValider2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		GridBagConstraints gbc_boutonValider2 = new GridBagConstraints();
 		gbc_boutonValider2.fill = GridBagConstraints.HORIZONTAL;
 		gbc_boutonValider2.insets = new Insets(0, 0, 0, 5);
