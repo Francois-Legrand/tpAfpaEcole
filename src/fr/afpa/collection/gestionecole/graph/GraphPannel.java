@@ -398,18 +398,7 @@ public class GraphPannel {
 				eleve = new Eleve(eleve.getId(),inputPrenom.getText(), inputNom.getText(), localDate, comboBoxSalle.getSelectedIndex()+1,value );
 				System.out.println(value+"id de ladresse");
 				
-//				eleve.setNom(table.getModel().getValueAt(rowIndex, 1).toString());
-//				System.out.println(table.getModel().getValueAt(rowIndex, 1).toString());
-//				eleve.setPrenom(table.getModel().getValueAt(rowIndex, 2).toString());
-//				table.getModel().getValueAt(rowIndex, 3);
-//				String dateNaissanceToString = table.getModel().getValueAt(rowIndex, 3).toString();
-//				LocalDate localDate = LocalDate.parse(dateNaissanceToString);
-				
-				
-				//eleve.setDateNaissance(localDate);
-				
-				//table.getModel().getValueAt(rowIndex, 1).toString();
-				
+
 				eleveService.update(eleve);
 				model.setValueAt(inputNom.getText(), rowIndex, 1);
 				model.setValueAt(inputPrenom.getText(), rowIndex, 2);
@@ -645,14 +634,6 @@ public class GraphPannel {
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem_2);
-		
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Students list");
-		mntmNewMenuItem_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cardLayout.show(pnlCards, "pnlCard2_1_1");
-			}
-		});
-		mnNewMenu.add(mntmNewMenuItem_3);
 		frame.getContentPane().setLayout(null);
 	}
 
