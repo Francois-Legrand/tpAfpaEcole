@@ -30,12 +30,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.awt.event.ActionEvent;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -44,6 +46,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import com.mysql.cj.x.protobuf.Mysqlx.Ok;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -171,18 +174,17 @@ public class GraphPannel {
 		
 		AdresseService adresseService = new AdresseService();
 		
-		ArrayList nameListeAdresse = new ArrayList();
 		String adresseName;
 		int number = adresseService.findAll().size();
-		
-		
-		//tanter un add item avec resultset
-		
+
 		JComboBox comboBoxAdress = new JComboBox();
+		comboBoxAdress.addItem(new ComboItem("Select your adress", 0));
 		for(int i = 0; i < number; i++) {
-			adresseName = adresseService.findAll().get(i).getNumRue()+" rue "+adresseService.findAll().get(i).getNomRue()+" "+adresseService.findAll().get(i).getVille();
+			adresseName = adresseService.findAll().get(i).getNumRue()+" "+adresseService.findAll().get(i).getNomRue()+" "+adresseService.findAll().get(i).getVille();
 			int adresseId = adresseService.findAll().get(i).getId();
-			comboBoxAdress.addItem(new ComboItem(adresseName, adresseId));
+			ComboItem ok = new ComboItem(adresseName, adresseId); 
+			
+			comboBoxAdress.addItem(ok);
 		
 		}
 		comboBoxAdress.setBounds(130, 141, 149, 22);
@@ -207,10 +209,6 @@ public class GraphPannel {
 			
 		}
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(300, 66, 435, 321);
-		pnlCard1.add(scrollPane);
-		
 		JComboBox comboBoxSalle = new JComboBox(codeListe);
 		comboBoxSalle.setBounds(130, 168, 149, 20);
 		pnlCard1.add(comboBoxSalle);
@@ -222,13 +220,27 @@ public class GraphPannel {
 				int rowIndex = table.getSelectedRow();
 				inputNom.setText(model.getValueAt(rowIndex, 1).toString());
 				inputPrenom.setText(model.getValueAt(rowIndex, 2).toString());
-				System.out.println(model.getValueAt(rowIndex, 3).toString());
-				//inputDateNaissance.setDate((Date) model.getValueAt(rowIndex, 3));
-				System.out.println(model.getValueAt(rowIndex, 4));
-				comboBoxAdress.setSelectedItem(model.getValueAt(rowIndex, 4));
+				
+				String string = model.getValueAt(rowIndex, 3).toString();
+				
+				DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+				try {
+					Date date = format.parse(string);
+					System.out.println(date); // Sat Jan 02 00:00:00 GMT 2010
+					inputDateNaissance.setDate(date);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				
 				comboBoxSalle.setSelectedItem(model.getValueAt(rowIndex, 5));
 			}
 		});
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(300, 66, 435, 321);
+		pnlCard1.add(scrollPane);
 		model = new DefaultTableModel();
 		Object[] column = {"Id", "Nom", "Prénom", "DateNaissance","Adresse", "Salle"};
 		final Object[] row = new Object[6];
@@ -288,7 +300,7 @@ public class GraphPannel {
 						row[1] = eleveService.findAll().get(i).getNom();
 						row[2] = eleveService.findAll().get(i).getPrenom();
 						row[3] = eleveService.findAll().get(i).getDateNaissance();
-						row[4] = numRue+" rue "+nomRue+" "+ville;
+						row[4] = numRue+" "+nomRue+" "+ville;
 						row[5] = code;
 						model.addRow(row);
 					}
@@ -308,14 +320,7 @@ public class GraphPannel {
 			public void actionPerformed(ActionEvent e) {
 				
 				EleveService eleveService = new EleveService();
-//				if(row[0] == null) {
-//					
-//					row[0] = 1;
-//				}else {
-//					id = Integer.parseInt(row[0].toString())+1;
-//					
-//				}
-				
+
 				try {
 					Connection connection = ConnectionUtils.getMyConnection();
 
@@ -352,10 +357,8 @@ public class GraphPannel {
 					row[5] = comboBoxSalle.getSelectedItem();
 					model.addRow(row);
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -421,7 +424,6 @@ public class GraphPannel {
 		btnNewButton_1.setBounds(190, 291, 89, 23);
 		pnlCard1.add(btnNewButton_1);
 		
-	
 		JPanel pnlCard2 = new JPanel();
 		pnlCard2.setBackground(Color.GRAY);
 		pnlCards.add(pnlCard2, "pnlCard2");
