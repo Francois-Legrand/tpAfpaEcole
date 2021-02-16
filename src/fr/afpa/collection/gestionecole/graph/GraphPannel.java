@@ -52,6 +52,12 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.ImageIcon;
+import javax.swing.JSeparator;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import java.awt.Rectangle;
+import javax.swing.JToolBar;
 
 public class GraphPannel {
 	private JFrame frame;
@@ -134,26 +140,27 @@ public class GraphPannel {
 		cardLayout = (CardLayout) (pnlCards.getLayout());
 		
 		JPanel pnlCard1 = new JPanel();
-		pnlCard1.setBackground(Color.GRAY);
+		pnlCard1.setBackground(new Color(51, 153, 255));
 		pnlCards.add(pnlCard1, "pnlCard1");
 		pnlCard1.setLayout(null);
 		
 		JLabel labelSudents = new JLabel("Create student");
-		labelSudents.setBounds(0, 0, 683, 14);
+		labelSudents.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 18));
+		labelSudents.setHorizontalAlignment(SwingConstants.CENTER);
+		labelSudents.setBounds(0, 23, 783, 14);
 		pnlCard1.add(labelSudents);
 		
-		JLabel labelNom = new JLabel("Nom");
-		labelNom.setBounds(78, 66, 52, 14);
-		pnlCard1.add(labelNom);
-		
 		inputNom = new JTextField();
+		inputNom.setBackground(new Color(255, 255, 255));
 		inputNom.setBounds(130, 66, 149, 20);
 		pnlCard1.add(inputNom);
 		inputNom.setColumns(10);
 		
-		JLabel labelPrenom = new JLabel("Prénom");
-		labelPrenom.setBounds(64, 91, 66, 14);
-		pnlCard1.add(labelPrenom);
+		JLabel labelNom = new JLabel("Nom");
+		labelNom.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelNom.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
+		labelNom.setBounds(54, 66, 66, 14);
+		pnlCard1.add(labelNom);
 		
 		inputPrenom = new JTextField();
 		inputPrenom.setBounds(130, 91, 149, 20);
@@ -161,7 +168,9 @@ public class GraphPannel {
 		inputPrenom.setColumns(10);
 		
 		JLabel labelDateNaissance = new JLabel("Date de naissance");
-		labelDateNaissance.setBounds(10, 116, 120, 14);
+		labelDateNaissance.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelDateNaissance.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
+		labelDateNaissance.setBounds(0, 115, 120, 14);
 		pnlCard1.add(labelDateNaissance);
 		
 		JDateChooser inputDateNaissance = new JDateChooser();
@@ -169,7 +178,9 @@ public class GraphPannel {
 		pnlCard1.add(inputDateNaissance);
 		
 		JLabel labelAdress = new JLabel("Adresse");
-		labelAdress.setBounds(61, 142, 69, 14);
+		labelAdress.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelAdress.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
+		labelAdress.setBounds(51, 141, 69, 14);
 		pnlCard1.add(labelAdress);
 		
 		AdresseService adresseService = new AdresseService();
@@ -191,7 +202,9 @@ public class GraphPannel {
 		pnlCard1.add(comboBoxAdress);
 		
 		JLabel lbSalle = new JLabel("Salle");
-		lbSalle.setBounds(78, 168, 52, 14);
+		lbSalle.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbSalle.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
+		lbSalle.setBounds(68, 167, 52, 14);
 		pnlCard1.add(lbSalle);
 		
 		SalleService salleService = new SalleService();
@@ -239,7 +252,7 @@ public class GraphPannel {
 		});
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(300, 66, 435, 321);
+		scrollPane.setBounds(300, 66, 473, 321);
 		pnlCard1.add(scrollPane);
 		model = new DefaultTableModel();
 		Object[] column = {"Id", "Nom", "Prénom", "DateNaissance","Adresse", "Salle"};
@@ -248,8 +261,9 @@ public class GraphPannel {
 		table.setModel(model);
 		scrollPane.setViewportView(table);
 		
-		JButton boutonValider = new JButton("Add");
-		boutonValider.setBounds(190, 199, 89, 23);
+		JButton boutonValider = new JButton("");
+		boutonValider.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\user_add.png"));
+		boutonValider.setBounds(121, 341, 46, 46);
 		
 		EleveService eleveService = new EleveService();
 		
@@ -365,7 +379,8 @@ public class GraphPannel {
 		});
 		pnlCard1.add(boutonValider);
 		
-		JButton btnNewButton = new JButton("Delete");
+		JButton btnNewButton = new JButton("");
+		btnNewButton.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\user_delete.png"));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int rowIndex = table.getSelectedRow();
@@ -380,10 +395,11 @@ public class GraphPannel {
 				
 			}
 		});
-		btnNewButton.setBounds(190, 247, 89, 23);
+		btnNewButton.setBounds(233, 341, 46, 46);
 		pnlCard1.add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("Update");
+		JButton btnNewButton_1 = new JButton("");
+		btnNewButton_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_edit.png"));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -410,127 +426,133 @@ public class GraphPannel {
 				JOptionPane.showMessageDialog(null, "Update success");
 			}
 		});
-		btnNewButton_1.setBounds(190, 291, 89, 23);
+		btnNewButton_1.setBounds(177, 341, 46, 46);
 		pnlCard1.add(btnNewButton_1);
 		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(47, 328, 238, 2);
+		pnlCard1.add(separator);
+		
+		JLabel labelPrenom_1 = new JLabel("Prénom");
+		labelPrenom_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelPrenom_1.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
+		labelPrenom_1.setBounds(54, 91, 66, 14);
+		pnlCard1.add(labelPrenom_1);
+		
+		JToolBar toolBar = new JToolBar();
+		toolBar.setBounds(-36, 0, 819, 20);
+		pnlCard1.add(toolBar);
+		
+		JLabel lblNewLabel_2 = new JLabel("");
+		toolBar.add(lblNewLabel_2);
+		lblNewLabel_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cardLayout.show(pnlCards, "pnlCard2_1");
+			}
+		});
+		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\printer.png"));
+		
+		JLabel lblNewLabel_1 = new JLabel("");
+		toolBar.add(lblNewLabel_1);
+		lblNewLabel_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cardLayout.show(pnlCards, "pnlCard2");
+			}
+		});
+		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\home.png"));
+		lblNewLabel_1.setDisplayedMnemonic('2');
+		
+		JLabel lblNewLabel = new JLabel("");
+		toolBar.add(lblNewLabel);
+		lblNewLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cardLayout.show(pnlCards, "pnlCard1");
+			}
+		});
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\user_white.png"));
+		
 		JPanel pnlCard2 = new JPanel();
-		pnlCard2.setBackground(Color.GRAY);
+		pnlCard2.setBackground(new Color(0, 153, 255));
 		pnlCards.add(pnlCard2, "pnlCard2");
-		GridBagLayout gbl_pnlCard2 = new GridBagLayout();
-		gbl_pnlCard2.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_pnlCard2.rowHeights = new int[]{0, 0, 0, 0, 0};
-		gbl_pnlCard2.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_pnlCard2.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		pnlCard2.setLayout(gbl_pnlCard2);
+		pnlCard2.setLayout(null);
 		
 		JLabel labelSalle = new JLabel("Create salle");
-		GridBagConstraints gbc_labelSalle = new GridBagConstraints();
-		gbc_labelSalle.insets = new Insets(0, 0, 5, 0);
-		gbc_labelSalle.gridwidth = 8;
-		gbc_labelSalle.gridx = 0;
-		gbc_labelSalle.gridy = 0;
-		pnlCard2.add(labelSalle, gbc_labelSalle);
+		labelSalle.setHorizontalAlignment(SwingConstants.CENTER);
+		labelSalle.setBounds(0, 0, 795, 14);
+		pnlCard2.add(labelSalle);
 		
 		JLabel labelCode = new JLabel("Code");
-		GridBagConstraints gbc_labelCode = new GridBagConstraints();
-		gbc_labelCode.anchor = GridBagConstraints.EAST;
-		gbc_labelCode.insets = new Insets(0, 0, 5, 5);
-		gbc_labelCode.gridx = 2;
-		gbc_labelCode.gridy = 1;
-		pnlCard2.add(labelCode, gbc_labelCode);
+		labelCode.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelCode.setBounds(30, 87, 79, 14);
+		pnlCard2.add(labelCode);
 		
 		inputCode = new JTextField();
-		GridBagConstraints gbc_inputCode = new GridBagConstraints();
-		gbc_inputCode.insets = new Insets(0, 0, 5, 5);
-		gbc_inputCode.fill = GridBagConstraints.HORIZONTAL;
-		gbc_inputCode.gridx = 3;
-		gbc_inputCode.gridy = 1;
-		pnlCard2.add(inputCode, gbc_inputCode);
+		inputCode.setBounds(114, 84, 164, 20);
+		pnlCard2.add(inputCode);
 		inputCode.setColumns(10);
 		
 		JLabel labellibelle = new JLabel("Libellé");
-		GridBagConstraints gbc_labellibelle = new GridBagConstraints();
-		gbc_labellibelle.anchor = GridBagConstraints.EAST;
-		gbc_labellibelle.insets = new Insets(0, 0, 5, 5);
-		gbc_labellibelle.gridx = 2;
-		gbc_labellibelle.gridy = 2;
-		pnlCard2.add(labellibelle, gbc_labellibelle);
+		labellibelle.setHorizontalAlignment(SwingConstants.RIGHT);
+		labellibelle.setBounds(30, 112, 79, 14);
+		pnlCard2.add(labellibelle);
 		
 		inputLibelle = new JTextField();
-		GridBagConstraints gbc_inputLibelle = new GridBagConstraints();
-		gbc_inputLibelle.insets = new Insets(0, 0, 5, 5);
-		gbc_inputLibelle.fill = GridBagConstraints.HORIZONTAL;
-		gbc_inputLibelle.gridx = 3;
-		gbc_inputLibelle.gridy = 2;
-		pnlCard2.add(inputLibelle, gbc_inputLibelle);
+		inputLibelle.setBounds(114, 109, 164, 20);
+		pnlCard2.add(inputLibelle);
 		inputLibelle.setColumns(10);
 		
-		JButton boutonValider2 = new JButton("Valider");
-		boutonValider2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		GridBagConstraints gbc_boutonValider2 = new GridBagConstraints();
-		gbc_boutonValider2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_boutonValider2.insets = new Insets(0, 0, 0, 5);
-		gbc_boutonValider2.gridx = 3;
-		gbc_boutonValider2.gridy = 3;
-		pnlCard2.add(boutonValider2, gbc_boutonValider2);
+		JButton boutonValider_1 = new JButton("");
+		boutonValider_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\add.png"));
+		boutonValider_1.setBounds(120, 341, 46, 46);
+		pnlCard2.add(boutonValider_1);
+		
+		JButton btnNewButton_1_1 = new JButton("");
+		btnNewButton_1_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_edit.png"));
+		btnNewButton_1_1.setBounds(176, 341, 46, 46);
+		pnlCard2.add(btnNewButton_1_1);
+		
+		JButton btnNewButton_2 = new JButton("");
+		btnNewButton_2.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\close.png"));
+		btnNewButton_2.setBounds(232, 341, 46, 46);
+		pnlCard2.add(btnNewButton_2);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(46, 328, 238, 2);
+		pnlCard2.add(separator_1);
 		
 		JPanel pnlCard2_1 = new JPanel();
-		pnlCard2_1.setBackground(Color.GRAY);
+		pnlCard2_1.setBackground(new Color(0, 153, 255));
 		pnlCards.add(pnlCard2_1, "pnlCard2_1");
-		GridBagLayout gbl_pnlCard2_1 = new GridBagLayout();
-		gbl_pnlCard2_1.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_pnlCard2_1.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_pnlCard2_1.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_pnlCard2_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		pnlCard2_1.setLayout(gbl_pnlCard2_1);
+		pnlCard2_1.setLayout(null);
 		
 		JLabel lbsAdresss = new JLabel("Create adress");
-		GridBagConstraints gbc_lbsAdresss = new GridBagConstraints();
-		gbc_lbsAdresss.gridwidth = 8;
-		gbc_lbsAdresss.insets = new Insets(0, 0, 5, 0);
-		gbc_lbsAdresss.gridx = 0;
-		gbc_lbsAdresss.gridy = 0;
-		pnlCard2_1.add(lbsAdresss, gbc_lbsAdresss);
+		lbsAdresss.setBounds(0, 0, 783, 14);
+		lbsAdresss.setHorizontalAlignment(SwingConstants.CENTER);
+		pnlCard2_1.add(lbsAdresss);
 		
 		JLabel labelPays = new JLabel("Pays");
-		GridBagConstraints gbc_labelPays = new GridBagConstraints();
-		gbc_labelPays.anchor = GridBagConstraints.EAST;
-		gbc_labelPays.insets = new Insets(0, 0, 5, 5);
-		gbc_labelPays.gridx = 2;
-		gbc_labelPays.gridy = 1;
-		pnlCard2_1.add(labelPays, gbc_labelPays);
+		labelPays.setBounds(251, 22, 23, 14);
+		pnlCard2_1.add(labelPays);
 		
 		inputPays = new JTextField();
+		inputPays.setBounds(279, 19, 252, 20);
 		inputPays.setColumns(10);
-		GridBagConstraints gbc_inputPays = new GridBagConstraints();
-		gbc_inputPays.fill = GridBagConstraints.HORIZONTAL;
-		gbc_inputPays.insets = new Insets(0, 0, 5, 5);
-		gbc_inputPays.gridx = 3;
-		gbc_inputPays.gridy = 1;
-		pnlCard2_1.add(inputPays, gbc_inputPays);
+		pnlCard2_1.add(inputPays);
 		
 		JLabel labelVille = new JLabel("Ville");
-		GridBagConstraints gbc_labelVille = new GridBagConstraints();
-		gbc_labelVille.anchor = GridBagConstraints.EAST;
-		gbc_labelVille.insets = new Insets(0, 0, 5, 5);
-		gbc_labelVille.gridx = 2;
-		gbc_labelVille.gridy = 2;
-		pnlCard2_1.add(labelVille, gbc_labelVille);
+		labelVille.setBounds(253, 47, 21, 14);
+		pnlCard2_1.add(labelVille);
 		
 		inputVille = new JTextField();
+		inputVille.setBounds(279, 44, 252, 20);
 		inputVille.setColumns(10);
-		GridBagConstraints gbc_inputVille = new GridBagConstraints();
-		gbc_inputVille.fill = GridBagConstraints.HORIZONTAL;
-		gbc_inputVille.insets = new Insets(0, 0, 5, 5);
-		gbc_inputVille.gridx = 3;
-		gbc_inputVille.gridy = 2;
-		pnlCard2_1.add(inputVille, gbc_inputVille);
+		pnlCard2_1.add(inputVille);
 		
 		JButton buttonValider3 = new JButton("Valider");
+		buttonValider3.setBounds(279, 144, 252, 23);
 		buttonValider3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -540,100 +562,42 @@ public class GraphPannel {
 				int codePostal = Integer.parseInt(inputCodePostal.getText());
 				String ville = inputVille.getText();
 				String pays = inputPays.getText();
-				
 				adresseService.create(new Adresse( numero, rue, codePostal, ville, pays));
 				
 			}
 		});
 		
 		JLabel lblCodePostal = new JLabel("Code Postal");
-		GridBagConstraints gbc_lblCodePostal = new GridBagConstraints();
-		gbc_lblCodePostal.anchor = GridBagConstraints.EAST;
-		gbc_lblCodePostal.insets = new Insets(0, 0, 5, 5);
-		gbc_lblCodePostal.gridx = 2;
-		gbc_lblCodePostal.gridy = 3;
-		pnlCard2_1.add(lblCodePostal, gbc_lblCodePostal);
+		lblCodePostal.setBounds(216, 72, 58, 14);
+		pnlCard2_1.add(lblCodePostal);
 		
 		inputCodePostal = new JTextField();
-		GridBagConstraints gbc_inputCodePostal = new GridBagConstraints();
-		gbc_inputCodePostal.insets = new Insets(0, 0, 5, 5);
-		gbc_inputCodePostal.fill = GridBagConstraints.HORIZONTAL;
-		gbc_inputCodePostal.gridx = 3;
-		gbc_inputCodePostal.gridy = 3;
-		pnlCard2_1.add(inputCodePostal, gbc_inputCodePostal);
+		inputCodePostal.setBounds(279, 69, 252, 20);
+		pnlCard2_1.add(inputCodePostal);
 		inputCodePostal.setColumns(10);
 		
 		JLabel labelRue = new JLabel("Rue");
-		GridBagConstraints gbc_labelRue = new GridBagConstraints();
-		gbc_labelRue.anchor = GridBagConstraints.EAST;
-		gbc_labelRue.insets = new Insets(0, 0, 5, 5);
-		gbc_labelRue.gridx = 2;
-		gbc_labelRue.gridy = 4;
-		pnlCard2_1.add(labelRue, gbc_labelRue);
+		labelRue.setBounds(255, 97, 19, 14);
+		pnlCard2_1.add(labelRue);
 		
 		inputRue = new JTextField();
-		GridBagConstraints gbc_inputRue = new GridBagConstraints();
-		gbc_inputRue.insets = new Insets(0, 0, 5, 5);
-		gbc_inputRue.fill = GridBagConstraints.HORIZONTAL;
-		gbc_inputRue.gridx = 3;
-		gbc_inputRue.gridy = 4;
-		pnlCard2_1.add(inputRue, gbc_inputRue);
+		inputRue.setBounds(279, 94, 252, 20);
+		pnlCard2_1.add(inputRue);
 		inputRue.setColumns(10);
 		
 		JLabel labelNumero = new JLabel("Numéro");
-		GridBagConstraints gbc_labelNumero = new GridBagConstraints();
-		gbc_labelNumero.anchor = GridBagConstraints.EAST;
-		gbc_labelNumero.insets = new Insets(0, 0, 5, 5);
-		gbc_labelNumero.gridx = 2;
-		gbc_labelNumero.gridy = 5;
-		pnlCard2_1.add(labelNumero, gbc_labelNumero);
+		labelNumero.setBounds(235, 122, 39, 14);
+		pnlCard2_1.add(labelNumero);
 		
 		inputNumero = new JTextField();
-		GridBagConstraints gbc_inputNumero = new GridBagConstraints();
-		gbc_inputNumero.insets = new Insets(0, 0, 5, 5);
-		gbc_inputNumero.fill = GridBagConstraints.HORIZONTAL;
-		gbc_inputNumero.gridx = 3;
-		gbc_inputNumero.gridy = 5;
-		pnlCard2_1.add(inputNumero, gbc_inputNumero);
+		inputNumero.setBounds(279, 119, 252, 20);
+		pnlCard2_1.add(inputNumero);
 		inputNumero.setColumns(10);
-		GridBagConstraints gbc_buttonValider3 = new GridBagConstraints();
-		gbc_buttonValider3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_buttonValider3.insets = new Insets(0, 0, 0, 5);
-		gbc_buttonValider3.gridx = 3;
-		gbc_buttonValider3.gridy = 6;
-		pnlCard2_1.add(buttonValider3, gbc_buttonValider3);
+		pnlCard2_1.add(buttonValider3);
 		
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
-		
-		JMenu mnNewMenu = new JMenu("Menu");
-		menuBar.add(mnNewMenu);
-		
-		JMenuItem mntmNewMenuItem = new JMenuItem("create student");
-		mntmNewMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cardLayout.show(pnlCards, "pnlCard1");
-			}
-		});
-		mnNewMenu.add(mntmNewMenuItem);
-		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("create room");
-		mntmNewMenuItem_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cardLayout.show(pnlCards, "pnlCard2");
-			}
-		});
-		mnNewMenu.add(mntmNewMenuItem_1);
 		frame.getContentPane().setLayout(null);
-		
-		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("create adress");
-		mntmNewMenuItem_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cardLayout.show(pnlCards, "pnlCard2_1");
-			}
-		});
-		mnNewMenu.add(mntmNewMenuItem_2);
 		frame.getContentPane().setLayout(null);
 	}
 
