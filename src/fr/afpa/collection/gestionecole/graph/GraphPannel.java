@@ -58,6 +58,8 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.Rectangle;
 import javax.swing.JToolBar;
+import java.awt.ComponentOrientation;
+import java.awt.Cursor;
 
 public class GraphPannel {
 	private JFrame frame;
@@ -79,7 +81,11 @@ public class GraphPannel {
 	private JTextField inputNumero;
 	private JTable table;
 	DefaultTableModel model;
+	DefaultTableModel model2;
+	DefaultTableModel model3;
 	private JTextField inputCodePostal;
+	private JTable table_1;
+	private JTable table_2;
 
 	/**
 	 * Launch the application.
@@ -116,7 +122,7 @@ public class GraphPannel {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 800, 457);
+		frame.setBounds(100, 100, 1400, 900);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0};
@@ -126,62 +132,66 @@ public class GraphPannel {
 		
 		frame.getContentPane().setLayout(gridBagLayout);
 		JSplitPane splitPane = new JSplitPane();
-		splitPane.setBounds(-20, 0, 800, 400);
+		splitPane.setBounds(-20, 0, 1400, 900);
 		frame.getContentPane().add(splitPane);
 		
 		JPanel panel = new JPanel();
 		splitPane.setLeftComponent(panel);
 		
 		JPanel pnlCards = new JPanel();
+		
 		splitPane.setRightComponent(pnlCards);
 		pnlCards.setLayout(new CardLayout(0,0));
 		
 		CardLayout cardLayout;
 		cardLayout = (CardLayout) (pnlCards.getLayout());
 		
-		JPanel pnlCard1 = new JPanel();
-		pnlCard1.setBackground(new Color(51, 153, 255));
-		pnlCards.add(pnlCard1, "pnlCard1");
-		pnlCard1.setLayout(null);
 		
-		JLabel labelSudents = new JLabel("Create student");
-		labelSudents.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 18));
+		GradientPanel gradien = new GradientPanel();
+		
+		pnlCards.add(gradien, "gradien");
+		gradien.setLayout(null);
+		
+		JLabel labelSudents = new JLabel("CREATION D'UN ETUDIANT");
+		labelSudents.setFont(new Font("Microsoft JhengHei", Font.BOLD | Font.ITALIC, 18));
 		labelSudents.setHorizontalAlignment(SwingConstants.CENTER);
-		labelSudents.setBounds(0, 23, 783, 14);
-		pnlCard1.add(labelSudents);
+		labelSudents.setBounds(0, 23, 1383, 32);
+		gradien.add(labelSudents);
 		
 		inputNom = new JTextField();
+		inputNom.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		inputNom.setBackground(new Color(255, 255, 255));
-		inputNom.setBounds(130, 66, 149, 20);
-		pnlCard1.add(inputNom);
+		inputNom.setBounds(180, 130, 289, 50);
+		gradien.add(inputNom);
 		inputNom.setColumns(10);
 		
 		JLabel labelNom = new JLabel("Nom");
 		labelNom.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelNom.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
-		labelNom.setBounds(54, 66, 66, 14);
-		pnlCard1.add(labelNom);
+		labelNom.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
+		labelNom.setBounds(0, 130, 170, 50);
+		gradien.add(labelNom);
 		
 		inputPrenom = new JTextField();
-		inputPrenom.setBounds(130, 91, 149, 20);
-		pnlCard1.add(inputPrenom);
+		inputPrenom.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		inputPrenom.setBounds(180, 222, 289, 50);
+		gradien.add(inputPrenom);
 		inputPrenom.setColumns(10);
 		
 		JLabel labelDateNaissance = new JLabel("Date de naissance");
 		labelDateNaissance.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelDateNaissance.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
-		labelDateNaissance.setBounds(0, 115, 120, 14);
-		pnlCard1.add(labelDateNaissance);
+		labelDateNaissance.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
+		labelDateNaissance.setBounds(0, 307, 170, 50);
+		gradien.add(labelDateNaissance);
 		
 		JDateChooser inputDateNaissance = new JDateChooser();
-		inputDateNaissance.setBounds(130, 116, 149, 20);
-		pnlCard1.add(inputDateNaissance);
+		inputDateNaissance.setBounds(180, 308, 289, 50);
+		gradien.add(inputDateNaissance);
 		
 		JLabel labelAdress = new JLabel("Adresse");
 		labelAdress.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelAdress.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
-		labelAdress.setBounds(51, 141, 69, 14);
-		pnlCard1.add(labelAdress);
+		labelAdress.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
+		labelAdress.setBounds(0, 386, 170, 50);
+		gradien.add(labelAdress);
 		
 		AdresseService adresseService = new AdresseService();
 		
@@ -189,6 +199,7 @@ public class GraphPannel {
 		int number = adresseService.findAll().size();
 
 		JComboBox comboBoxAdress = new JComboBox();
+		comboBoxAdress.setFont(new Font("Microsoft JhengHei", Font.BOLD, 18));
 		comboBoxAdress.addItem(new ComboItem("Select your adress", 0));
 		for(int i = 0; i < number; i++) {
 			adresseName = adresseService.findAll().get(i).getNumRue()+" "+adresseService.findAll().get(i).getNomRue()+" "+adresseService.findAll().get(i).getVille();
@@ -198,14 +209,14 @@ public class GraphPannel {
 			comboBoxAdress.addItem(ok);
 		
 		}
-		comboBoxAdress.setBounds(130, 141, 149, 22);
-		pnlCard1.add(comboBoxAdress);
+		comboBoxAdress.setBounds(180, 386, 289, 50);
+		gradien.add(comboBoxAdress);
 		
 		JLabel lbSalle = new JLabel("Salle");
 		lbSalle.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbSalle.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
-		lbSalle.setBounds(68, 167, 52, 14);
-		pnlCard1.add(lbSalle);
+		lbSalle.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
+		lbSalle.setBounds(0, 463, 167, 50);
+		gradien.add(lbSalle);
 		
 		SalleService salleService = new SalleService();
 		
@@ -223,8 +234,9 @@ public class GraphPannel {
 		}
 		
 		JComboBox comboBoxSalle = new JComboBox(codeListe);
-		comboBoxSalle.setBounds(130, 168, 149, 20);
-		pnlCard1.add(comboBoxSalle);
+		comboBoxSalle.setFont(new Font("Microsoft JhengHei", Font.BOLD, 18));
+		comboBoxSalle.setBounds(180, 465, 289, 50);
+		gradien.add(comboBoxSalle);
 		
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
@@ -252,8 +264,8 @@ public class GraphPannel {
 		});
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(300, 66, 473, 321);
-		pnlCard1.add(scrollPane);
+		scrollPane.setBounds(535, 130, 827, 690);
+		gradien.add(scrollPane);
 		model = new DefaultTableModel();
 		Object[] column = {"Id", "Nom", "Prénom", "DateNaissance","Adresse", "Salle"};
 		final Object[] row = new Object[6];
@@ -263,7 +275,7 @@ public class GraphPannel {
 		
 		JButton boutonValider = new JButton("");
 		boutonValider.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\user_add.png"));
-		boutonValider.setBounds(121, 341, 46, 46);
+		boutonValider.setBounds(311, 774, 46, 46);
 		
 		EleveService eleveService = new EleveService();
 		
@@ -377,8 +389,7 @@ public class GraphPannel {
 				}
 			}
 		});
-		pnlCard1.add(boutonValider);
-		
+		gradien.add(boutonValider);
 		JButton btnNewButton = new JButton("");
 		btnNewButton.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\user_delete.png"));
 		btnNewButton.addActionListener(new ActionListener() {
@@ -395,8 +406,8 @@ public class GraphPannel {
 				
 			}
 		});
-		btnNewButton.setBounds(233, 341, 46, 46);
-		pnlCard1.add(btnNewButton);
+		btnNewButton.setBounds(423, 774, 46, 46);
+		gradien.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("");
 		btnNewButton_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_edit.png"));
@@ -426,179 +437,361 @@ public class GraphPannel {
 				JOptionPane.showMessageDialog(null, "Update success");
 			}
 		});
-		btnNewButton_1.setBounds(177, 341, 46, 46);
-		pnlCard1.add(btnNewButton_1);
+		btnNewButton_1.setBounds(367, 774, 46, 46);
+		gradien.add(btnNewButton_1);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(47, 328, 238, 2);
-		pnlCard1.add(separator);
+		separator.setBounds(68, 761, 401, 2);
+		gradien.add(separator);
 		
 		JLabel labelPrenom_1 = new JLabel("Prénom");
 		labelPrenom_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelPrenom_1.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 14));
-		labelPrenom_1.setBounds(54, 91, 66, 14);
-		pnlCard1.add(labelPrenom_1);
+		labelPrenom_1.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
+		labelPrenom_1.setBounds(0, 222, 170, 50);
+		gradien.add(labelPrenom_1);
 		
-		JToolBar toolBar = new JToolBar();
-		toolBar.setBounds(-36, 0, 819, 20);
-		pnlCard1.add(toolBar);
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setBackground(new Color(220, 20, 60));
+		separator_2.setBounds(0, 77, 1383, 19);
+		gradien.add(separator_2);
 		
-		JLabel lblNewLabel_2 = new JLabel("");
-		toolBar.add(lblNewLabel_2);
-		lblNewLabel_2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				cardLayout.show(pnlCards, "pnlCard2_1");
-			}
-		});
-		lblNewLabel_2.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\printer.png"));
+		JSeparator separator_2_1 = new JSeparator();
+		separator_2_1.setBackground(new Color(220, 20, 60));
+		separator_2_1.setOrientation(SwingConstants.VERTICAL);
+		separator_2_1.setBounds(499, 78, 26, 767);
+		gradien.add(separator_2_1);
 		
-		JLabel lblNewLabel_1 = new JLabel("");
-		toolBar.add(lblNewLabel_1);
-		lblNewLabel_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				cardLayout.show(pnlCards, "pnlCard2");
-			}
-		});
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\home.png"));
-		lblNewLabel_1.setDisplayedMnemonic('2');
+		JLabel lblNewLabel_3 = new JLabel("Liste des élèves");
+		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 18));
+		lblNewLabel_3.setBounds(499, 77, 884, 42);
+		gradien.add(lblNewLabel_3);
 		
-		JLabel lblNewLabel = new JLabel("");
-		toolBar.add(lblNewLabel);
-		lblNewLabel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				cardLayout.show(pnlCards, "pnlCard1");
-			}
-		});
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\user_white.png"));
+		GradientPanel gradient2 = new GradientPanel();
 		
-		JPanel pnlCard2 = new JPanel();
-		pnlCard2.setBackground(new Color(0, 153, 255));
-		pnlCards.add(pnlCard2, "pnlCard2");
-		pnlCard2.setLayout(null);
+		gradient2.setBackground(new Color(0, 153, 255));
 		
-		JLabel labelSalle = new JLabel("Create salle");
-		labelSalle.setHorizontalAlignment(SwingConstants.CENTER);
-		labelSalle.setBounds(0, 0, 795, 14);
-		pnlCard2.add(labelSalle);
+		pnlCards.add(gradient2, "gradient2");
+		gradient2.setLayout(null);
 		
 		JLabel labelCode = new JLabel("Code");
+		labelCode.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
 		labelCode.setHorizontalAlignment(SwingConstants.RIGHT);
-		labelCode.setBounds(30, 87, 79, 14);
-		pnlCard2.add(labelCode);
+		labelCode.setBounds(0, 130, 170, 50);
+		gradient2.add(labelCode);
 		
 		inputCode = new JTextField();
-		inputCode.setBounds(114, 84, 164, 20);
-		pnlCard2.add(inputCode);
+		inputCode.setBounds(180, 130, 289, 50);
+		gradient2.add(inputCode);
 		inputCode.setColumns(10);
 		
 		JLabel labellibelle = new JLabel("Libellé");
+		labellibelle.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
 		labellibelle.setHorizontalAlignment(SwingConstants.RIGHT);
-		labellibelle.setBounds(30, 112, 79, 14);
-		pnlCard2.add(labellibelle);
+		labellibelle.setBounds(0, 222, 170, 50);
+		gradient2.add(labellibelle);
 		
 		inputLibelle = new JTextField();
-		inputLibelle.setBounds(114, 109, 164, 20);
-		pnlCard2.add(inputLibelle);
+		inputLibelle.setBounds(180, 222, 289, 50);
+		gradient2.add(inputLibelle);
 		inputLibelle.setColumns(10);
 		
 		JButton boutonValider_1 = new JButton("");
-		boutonValider_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\add.png"));
-		boutonValider_1.setBounds(120, 341, 46, 46);
-		pnlCard2.add(boutonValider_1);
+		boutonValider_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_add.png"));
+		boutonValider_1.setBounds(311, 774, 46, 46);
+		gradient2.add(boutonValider_1);
 		
 		JButton btnNewButton_1_1 = new JButton("");
 		btnNewButton_1_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_edit.png"));
-		btnNewButton_1_1.setBounds(176, 341, 46, 46);
-		pnlCard2.add(btnNewButton_1_1);
+		btnNewButton_1_1.setBounds(367, 774, 46, 46);
+		gradient2.add(btnNewButton_1_1);
 		
 		JButton btnNewButton_2 = new JButton("");
-		btnNewButton_2.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\close.png"));
-		btnNewButton_2.setBounds(232, 341, 46, 46);
-		pnlCard2.add(btnNewButton_2);
+		btnNewButton_2.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_delete.png"));
+		btnNewButton_2.setBounds(423, 774, 46, 46);
+		gradient2.add(btnNewButton_2);
 		
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(46, 328, 238, 2);
-		pnlCard2.add(separator_1);
+		separator_1.setBounds(68, 761, 404, 2);
+		gradient2.add(separator_1);
 		
-		JPanel pnlCard2_1 = new JPanel();
-		pnlCard2_1.setBackground(new Color(0, 153, 255));
-		pnlCards.add(pnlCard2_1, "pnlCard2_1");
-		pnlCard2_1.setLayout(null);
+		JSeparator separator_2_1_1 = new JSeparator();
+		separator_2_1_1.setOrientation(SwingConstants.VERTICAL);
+		separator_2_1_1.setBackground(new Color(220, 20, 60));
+		separator_2_1_1.setBounds(499, 78, 26, 767);
+		gradient2.add(separator_2_1_1);
 		
-		JLabel lbsAdresss = new JLabel("Create adress");
-		lbsAdresss.setBounds(0, 0, 783, 14);
+		JSeparator separator_2_2 = new JSeparator();
+		separator_2_2.setBackground(new Color(220, 20, 60));
+		separator_2_2.setBounds(0, 77, 1383, 19);
+		gradient2.add(separator_2_2);
+		
+		table_1 = new JTable();
+		table_1.setBounds(0, 0, 1, 1);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setSize(827, 690);
+		scrollPane_1.setLocation(535, 130);
+		scrollPane.setBounds(535, 130, 827, 690);
+		gradient2.add(scrollPane_1);
+		model2 = new DefaultTableModel();
+		Object[] column1 = {"Id", "Code", "Libellé"};
+		final Object[] row1 = new Object[3];
+		model2.setColumnIdentifiers(column1);
+		table_1.setModel(model2);
+		scrollPane_1.setViewportView(table_1);
+		
+		JLabel labelSalle_1 = new JLabel("CREATION DE SALLE");
+		labelSalle_1.setHorizontalAlignment(SwingConstants.CENTER);
+		labelSalle_1.setFont(new Font("Microsoft JhengHei", Font.BOLD | Font.ITALIC, 18));
+		labelSalle_1.setBounds(0, 21, 1383, 32);
+		gradient2.add(labelSalle_1);
+		
+		JLabel lblNewLabel_3_2 = new JLabel("Liste des salles");
+		lblNewLabel_3_2.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3_2.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 18));
+		lblNewLabel_3_2.setBounds(499, 78, 884, 42);
+		gradient2.add(lblNewLabel_3_2);
+		
+		GradientPanel gradient3 = new GradientPanel();
+		
+		gradient3.setBackground(new Color(0, 153, 255));
+		pnlCards.add(gradient3, "gradient3");
+		gradient3.setLayout(null);
+		
+		
+		
+		
+		JLabel lbsAdresss = new JLabel("CREATION D'ADRESSE");
+		lbsAdresss.setFont(new Font("Microsoft JhengHei", Font.BOLD | Font.ITALIC, 18));
+		lbsAdresss.setBounds(0, 23, 1383, 32);
 		lbsAdresss.setHorizontalAlignment(SwingConstants.CENTER);
-		pnlCard2_1.add(lbsAdresss);
+		gradient3.add(lbsAdresss);
 		
 		JLabel labelPays = new JLabel("Pays");
-		labelPays.setBounds(251, 22, 23, 14);
-		pnlCard2_1.add(labelPays);
+		labelPays.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
+		labelPays.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelPays.setBounds(0, 130, 170, 50);
+		gradient3.add(labelPays);
 		
 		inputPays = new JTextField();
-		inputPays.setBounds(279, 19, 252, 20);
+		inputPays.setFont(new Font("Microsoft JhengHei", Font.BOLD, 18));
+		inputPays.setBounds(180, 130, 289, 50);
 		inputPays.setColumns(10);
-		pnlCard2_1.add(inputPays);
+		gradient3.add(inputPays);
 		
 		JLabel labelVille = new JLabel("Ville");
-		labelVille.setBounds(253, 47, 21, 14);
-		pnlCard2_1.add(labelVille);
+		labelVille.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
+		labelVille.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelVille.setBounds(0, 222, 170, 50);
+		gradient3.add(labelVille);
 		
 		inputVille = new JTextField();
-		inputVille.setBounds(279, 44, 252, 20);
+		inputVille.setFont(new Font("Microsoft JhengHei", Font.BOLD, 18));
+		inputVille.setBounds(180, 222, 189, 50);
 		inputVille.setColumns(10);
-		pnlCard2_1.add(inputVille);
-		
-		JButton buttonValider3 = new JButton("Valider");
-		buttonValider3.setBounds(279, 144, 252, 23);
-		buttonValider3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				AdresseService adresseService = new AdresseService();
-				int numero = Integer.parseInt(inputNumero.getText());
-				String rue = inputRue.getText();
-				int codePostal = Integer.parseInt(inputCodePostal.getText());
-				String ville = inputVille.getText();
-				String pays = inputPays.getText();
-				adresseService.create(new Adresse( numero, rue, codePostal, ville, pays));
-				
-			}
-		});
+		gradient3.add(inputVille);
 		
 		JLabel lblCodePostal = new JLabel("Code Postal");
-		lblCodePostal.setBounds(216, 72, 58, 14);
-		pnlCard2_1.add(lblCodePostal);
+		lblCodePostal.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
+		lblCodePostal.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblCodePostal.setBounds(0, 308, 170, 50);
+		gradient3.add(lblCodePostal);
 		
 		inputCodePostal = new JTextField();
-		inputCodePostal.setBounds(279, 69, 252, 20);
-		pnlCard2_1.add(inputCodePostal);
+		inputCodePostal.setFont(new Font("Microsoft JhengHei", Font.BOLD, 18));
+		inputCodePostal.setBounds(180, 308, 289, 50);
+		gradient3.add(inputCodePostal);
 		inputCodePostal.setColumns(10);
 		
 		JLabel labelRue = new JLabel("Rue");
-		labelRue.setBounds(255, 97, 19, 14);
-		pnlCard2_1.add(labelRue);
+		labelRue.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
+		labelRue.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelRue.setBounds(0, 386, 170, 50);
+		gradient3.add(labelRue);
 		
 		inputRue = new JTextField();
-		inputRue.setBounds(279, 94, 252, 20);
-		pnlCard2_1.add(inputRue);
+		inputRue.setFont(new Font("Microsoft JhengHei", Font.BOLD, 18));
+		inputRue.setBounds(180, 386, 289, 50);
+		gradient3.add(inputRue);
 		inputRue.setColumns(10);
 		
 		JLabel labelNumero = new JLabel("Numéro");
-		labelNumero.setBounds(235, 122, 39, 14);
-		pnlCard2_1.add(labelNumero);
+		labelNumero.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
+		labelNumero.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelNumero.setBounds(0, 465, 170, 50);
+		gradient3.add(labelNumero);
 		
 		inputNumero = new JTextField();
-		inputNumero.setBounds(279, 119, 252, 20);
-		pnlCard2_1.add(inputNumero);
+		inputNumero.setFont(new Font("Microsoft JhengHei", Font.BOLD, 11));
+		inputNumero.setBounds(180, 465, 289, 50);
+		gradient3.add(inputNumero);
 		inputNumero.setColumns(10);
-		pnlCard2_1.add(buttonValider3);
+		
+		JSeparator separator_2_1_1_1 = new JSeparator();
+		separator_2_1_1_1.setOrientation(SwingConstants.VERTICAL);
+		separator_2_1_1_1.setBackground(new Color(220, 20, 60));
+		separator_2_1_1_1.setBounds(499, 78, 26, 767);
+		gradient3.add(separator_2_1_1_1);
+		
+		JSeparator separator_2_2_1 = new JSeparator();
+		separator_2_2_1.setBackground(new Color(220, 20, 60));
+		separator_2_2_1.setBounds(0, 77, 1383, 19);
+		gradient3.add(separator_2_2_1);
+		
+		JSeparator separator_1_1 = new JSeparator();
+		separator_1_1.setBounds(68, 759, 404, 2);
+		gradient3.add(separator_1_1);
+		
+		
+		
+		JButton btnNewButton_1_1_1 = new JButton("");
+		btnNewButton_1_1_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_edit.png"));
+		btnNewButton_1_1_1.setBounds(367, 774, 46, 46);
+		gradient3.add(btnNewButton_1_1_1);
+		
+		JButton btnNewButton_2_1 = new JButton("");
+		btnNewButton_2_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_delete.png"));
+		btnNewButton_2_1.setBounds(423, 774, 46, 46);
+		gradient3.add(btnNewButton_2_1);
+		
+		table_2 = new JTable();
+		table_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				
+			}
+		});
+		table_2.setBounds(0, 0, 1, 1);
+		
+		JScrollPane scrollPane_1_1 = new JScrollPane();
+		scrollPane_1_1.setSize(827, 690);
+		scrollPane_1_1.setLocation(535, 130);
+		scrollPane.setBounds(535, 130, 827, 690);
+		
+		
+		gradient3.add(scrollPane_1_1);
+		model3 = new DefaultTableModel();
+		Object[] column2 = {"Id", "Numéro de rue", "Nom de rue", "Ville", "Code postal", "Pays"};
+		final Object[] row2 = new Object[6];
+		model3.setColumnIdentifiers(column2);
+		table_2.setModel(model3);
+		scrollPane_1_1.setViewportView(table_2);
+		
+		
+		if(adresseService.findAll().size() == 0) {
+			System.out.println(adresseService.findAll().size());
+		}else {
+			
+			for(int i = 0; i < number; i++) {
+				System.out.println(eleveService.findAll().get(i).getId());
+				
+						row[0] = adresseService.findAll().get(i).getId();
+						row[1] = adresseService.findAll().get(i).getNumRue();
+						row[2] = adresseService.findAll().get(i).getNomRue();
+						row[3] = adresseService.findAll().get(i).getVille();
+						row[4] = adresseService.findAll().get(i).getCodePostale();
+						row[5] = adresseService.findAll().get(i).getPays();
+						model3.addRow(row);
+					}
+			}
+
+		JButton boutonValider_1_1 = new JButton("");
+		boutonValider_1_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_add.png"));
+		boutonValider_1_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					Connection connection = ConnectionUtils.getMyConnection();
+
+					String sqlSelectId = "SELECT auto_increment AS NEXT_ID FROM `information_schema`.`tables` WHERE table_name = \"adresse\" AND table_schema = \"ecole\"";
+					
+					Statement statement2 = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+					
+					ResultSet rs = statement2.executeQuery(sqlSelectId);
+					
+					int adresseId = 0;
+					while (rs.next()) {
+						
+					    adresseId = rs.getInt("NEXT_ID");
+					
+					}
+					AdresseService adresseService = new AdresseService();
+					int numero = Integer.parseInt(inputNumero.getText());
+					String rue = inputRue.getText();
+					int codePostal = Integer.parseInt(inputCodePostal.getText());
+					String ville = inputVille.getText();
+					String pays = inputPays.getText();
+					adresseService.create(new Adresse( numero, rue, codePostal, ville, pays));
+					
+					row2[0] = adresseId;
+					row2[1] = numero;
+					row2[2] = rue;
+					row2[3] = ville;
+					row2[4] = codePostal;
+					row2[5] = pays;
+					
+					model3.addRow(row2);
+				} catch (NumberFormatException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		boutonValider_1_1.setBounds(311, 774, 46, 46);
+		gradient3.add(boutonValider_1_1);
+		
+		JLabel lblNewLabel_3_1 = new JLabel("Liste d'adresses");
+		lblNewLabel_3_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3_1.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 18));
+		lblNewLabel_3_1.setBounds(499, 78, 884, 42);
+		gradient3.add(lblNewLabel_3_1);
+		
 		
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
+		
+		JMenu mnNewMenu = new JMenu("");
+		mnNewMenu.setToolTipText("Ajouter un évève");
+		mnNewMenu.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cardLayout.show(pnlCards, "gradien");
+			}
+		});
+		mnNewMenu.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\user_add.png"));
+		menuBar.add(mnNewMenu);
+		
+		JMenu mnNewMenu_1 = new JMenu("");
+		mnNewMenu_1.setToolTipText("Ajouter une salle");
+		mnNewMenu_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cardLayout.show(pnlCards, "gradient2");
+			}
+		});
+		mnNewMenu_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\door.png"));
+		menuBar.add(mnNewMenu_1);
+		
+		JMenu mnNewMenu_2 = new JMenu("");
+		mnNewMenu_2.setToolTipText("Ajouter une adresse");
+		mnNewMenu_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cardLayout.show(pnlCards, "gradient3");
+			}
+		});
+		mnNewMenu_2.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\adress-book.png"));
+		menuBar.add(mnNewMenu_2);
 		frame.getContentPane().setLayout(null);
-		frame.getContentPane().setLayout(null);
+		
 	}
 
 	private ComboBoxModel ArraysToString(String[] liste) {
