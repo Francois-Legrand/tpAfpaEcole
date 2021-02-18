@@ -656,7 +656,6 @@ public class GraphPannel {
 				adresse.setPays(inputPays.getText());
 				adresse.setNumRue(Integer.parseInt(inputNumero.getText()));
 				adresse.setCodePostale(Integer.parseInt(inputCodePostal.getText()));
-				//adresse = new Adresse(), , Integer.parseInt(inputCodePostal.getText()),,);
 				
 				
 				model3.setValueAt(inputNumero.getText(), rowIndex, 1);
