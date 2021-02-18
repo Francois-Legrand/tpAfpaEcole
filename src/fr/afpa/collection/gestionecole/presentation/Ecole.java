@@ -35,19 +35,15 @@ public class Ecole {
 		//adresseService.create(new Adresse(14, "rue des olivier", 62000, "lievin", "france", eleveId));
 //		adresseService.create(new Adresse(14, "rue des olivier", 62000, "lievin", "france", eleveId));
 		
-		//Adresse adresseid1 = adresseService.findById(2);
+		Adresse adresseid1 = adresseService.findById(2);
 
-		//int adresseId = adresseid1.getId();
-		
-		//adresseid1.setCodePostale(78000);
+		System.out.println(adresseid1);
+		adresseid1.setNomRue("ok");
+		adresseid1.setCodePostale(78000);
+		adresseService.update(adresseid1);
 		
 		//adresseService.delete(adresseid1);
 		
-		int[] idListe = new int[3];
-		String[] codeListe = new String[3];
-		
-		
-		System.out.println(adresseService.findAll().size());
 	}
 
 }

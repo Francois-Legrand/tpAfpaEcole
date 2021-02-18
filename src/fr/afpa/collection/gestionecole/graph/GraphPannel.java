@@ -79,13 +79,13 @@ public class GraphPannel {
 	private JTextField inputVille;
 	private JTextField inputRue;
 	private JTextField inputNumero;
-	private JTable table;
+	private JTable tableStudent;
 	DefaultTableModel model;
 	DefaultTableModel model2;
 	DefaultTableModel model3;
 	private JTextField inputCodePostal;
-	private JTable table_1;
-	private JTable table_2;
+	private JTable tableSalle;
+	private JTable tableAdress;
 
 	/**
 	 * Launch the application.
@@ -200,7 +200,7 @@ public class GraphPannel {
 
 		JComboBox comboBoxAdress = new JComboBox();
 		comboBoxAdress.setFont(new Font("Microsoft JhengHei", Font.BOLD, 18));
-		comboBoxAdress.addItem(new ComboItem("Select your adress", 0));
+		comboBoxAdress.addItem(new ComboItem("Selectioner votre adresse", 0));
 		for(int i = 0; i < number; i++) {
 			adresseName = adresseService.findAll().get(i).getNumRue()+" "+adresseService.findAll().get(i).getNomRue()+" "+adresseService.findAll().get(i).getVille();
 			int adresseId = adresseService.findAll().get(i).getId();
@@ -238,11 +238,11 @@ public class GraphPannel {
 		comboBoxSalle.setBounds(180, 465, 289, 50);
 		gradien.add(comboBoxSalle);
 		
-		table = new JTable();
-		table.addMouseListener(new MouseAdapter() {
+		tableStudent = new JTable();
+		tableStudent.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int rowIndex = table.getSelectedRow();
+				int rowIndex = tableStudent.getSelectedRow();
 				inputNom.setText(model.getValueAt(rowIndex, 1).toString());
 				inputPrenom.setText(model.getValueAt(rowIndex, 2).toString());
 				
@@ -270,12 +270,12 @@ public class GraphPannel {
 		Object[] column = {"Id", "Nom", "Prénom", "DateNaissance","Adresse", "Salle"};
 		final Object[] row = new Object[6];
 		model.setColumnIdentifiers(column);
-		table.setModel(model);
-		scrollPane.setViewportView(table);
+		tableStudent.setModel(model);
+		scrollPane.setViewportView(tableStudent);
 		
-		JButton boutonValider = new JButton("");
-		boutonValider.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\user_add.png"));
-		boutonValider.setBounds(311, 774, 46, 46);
+		JButton btnAddStudent = new JButton("");
+		btnAddStudent.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\user_add.png"));
+		btnAddStudent.setBounds(311, 774, 46, 46);
 		
 		EleveService eleveService = new EleveService();
 		
@@ -342,7 +342,7 @@ public class GraphPannel {
 			
 		}
 		
-		boutonValider.addActionListener(new ActionListener() {
+		btnAddStudent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				EleveService eleveService = new EleveService();
@@ -389,15 +389,15 @@ public class GraphPannel {
 				}
 			}
 		});
-		gradien.add(boutonValider);
-		JButton btnNewButton = new JButton("");
-		btnNewButton.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\user_delete.png"));
-		btnNewButton.addActionListener(new ActionListener() {
+		gradien.add(btnAddStudent);
+		JButton btnRemoveStudent = new JButton("");
+		btnRemoveStudent.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\user_delete.png"));
+		btnRemoveStudent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int rowIndex = table.getSelectedRow();
+				int rowIndex = tableStudent.getSelectedRow();
 				System.out.println(rowIndex);
-				Eleve deleteEleve = eleveService.findById(Integer.parseInt(table.getModel().getValueAt(rowIndex, 0).toString()));
-					deleteEleve.setId(Integer.parseInt(table.getModel().getValueAt(rowIndex, 0).toString()));
+				Eleve deleteEleve = eleveService.findById(Integer.parseInt(tableStudent.getModel().getValueAt(rowIndex, 0).toString()));
+					deleteEleve.setId(Integer.parseInt(tableStudent.getModel().getValueAt(rowIndex, 0).toString()));
 					System.out.println(deleteEleve.getId()+" id de leleve");
 					
 					model.removeRow(rowIndex);
@@ -406,21 +406,21 @@ public class GraphPannel {
 				
 			}
 		});
-		btnNewButton.setBounds(423, 774, 46, 46);
-		gradien.add(btnNewButton);
+		btnRemoveStudent.setBounds(423, 774, 46, 46);
+		gradien.add(btnRemoveStudent);
 		
-		JButton btnNewButton_1 = new JButton("");
-		btnNewButton_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_edit.png"));
-		btnNewButton_1.addActionListener(new ActionListener() {
+		JButton btnUpdateStudent = new JButton("");
+		btnUpdateStudent.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_edit.png"));
+		btnUpdateStudent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				Object item = comboBoxAdress.getSelectedItem();
 				int value = ((ComboItem)item).getValue();
 				Date dateNaissance = inputDateNaissance.getDate();
 				LocalDate localDate = Instant.ofEpochMilli(dateNaissance.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
-				int rowIndex = table.getSelectedRow();
-				int columnIndex = table.getSelectedColumn();
-				Eleve eleve = eleveService.findById(Integer.parseInt(table.getModel().getValueAt(rowIndex, 0).toString()));
+				int rowIndex = tableStudent.getSelectedRow();
+				int columnIndex = tableStudent.getSelectedColumn();
+				Eleve eleve = eleveService.findById(Integer.parseInt(tableStudent.getModel().getValueAt(rowIndex, 0).toString()));
 				System.out.println(eleve);
 				eleve = new Eleve(eleve.getId(),inputPrenom.getText(), inputNom.getText(), localDate, comboBoxSalle.getSelectedIndex()+1,value );
 				System.out.println(value+"id de ladresse");
@@ -437,8 +437,8 @@ public class GraphPannel {
 				JOptionPane.showMessageDialog(null, "Update success");
 			}
 		});
-		btnNewButton_1.setBounds(367, 774, 46, 46);
-		gradien.add(btnNewButton_1);
+		btnUpdateStudent.setBounds(367, 774, 46, 46);
+		gradien.add(btnUpdateStudent);
 		
 		JSeparator separator = new JSeparator();
 		separator.setBounds(68, 761, 401, 2);
@@ -526,8 +526,8 @@ public class GraphPannel {
 		separator_2_2.setBounds(0, 77, 1383, 19);
 		gradient2.add(separator_2_2);
 		
-		table_1 = new JTable();
-		table_1.setBounds(0, 0, 1, 1);
+		tableSalle = new JTable();
+		tableSalle.setBounds(0, 0, 1, 1);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setSize(827, 690);
@@ -538,8 +538,8 @@ public class GraphPannel {
 		Object[] column1 = {"Id", "Code", "Libellé"};
 		final Object[] row1 = new Object[3];
 		model2.setColumnIdentifiers(column1);
-		table_1.setModel(model2);
-		scrollPane_1.setViewportView(table_1);
+		tableSalle.setModel(model2);
+		scrollPane_1.setViewportView(tableSalle);
 		
 		JLabel labelSalle_1 = new JLabel("CREATION DE SALLE");
 		labelSalle_1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -558,9 +558,6 @@ public class GraphPannel {
 		gradient3.setBackground(new Color(0, 153, 255));
 		pnlCards.add(gradient3, "gradient3");
 		gradient3.setLayout(null);
-		
-		
-		
 		
 		JLabel lbsAdresss = new JLabel("CREATION D'ADRESSE");
 		lbsAdresss.setFont(new Font("Microsoft JhengHei", Font.BOLD | Font.ITALIC, 18));
@@ -623,7 +620,7 @@ public class GraphPannel {
 		gradient3.add(labelNumero);
 		
 		inputNumero = new JTextField();
-		inputNumero.setFont(new Font("Microsoft JhengHei", Font.BOLD, 11));
+		inputNumero.setFont(new Font("Microsoft JhengHei", Font.BOLD, 18));
 		inputNumero.setBounds(180, 465, 289, 50);
 		gradient3.add(inputNumero);
 		inputNumero.setColumns(10);
@@ -643,27 +640,58 @@ public class GraphPannel {
 		separator_1_1.setBounds(68, 759, 404, 2);
 		gradient3.add(separator_1_1);
 		
-		
-		
-		JButton btnNewButton_1_1_1 = new JButton("");
-		btnNewButton_1_1_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_edit.png"));
-		btnNewButton_1_1_1.setBounds(367, 774, 46, 46);
-		gradient3.add(btnNewButton_1_1_1);
-		
-		JButton btnNewButton_2_1 = new JButton("");
-		btnNewButton_2_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_delete.png"));
-		btnNewButton_2_1.setBounds(423, 774, 46, 46);
-		gradient3.add(btnNewButton_2_1);
-		
-		table_2 = new JTable();
-		table_2.addMouseListener(new MouseAdapter() {
+		JButton btnUpdateAdress = new JButton("");
+		btnUpdateAdress.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
+				int rowIndex = tableAdress.getSelectedRow();
 				
+				Adresse adresse = adresseService.findById(Integer.parseInt(tableAdress.getModel().getValueAt(rowIndex, 0).toString()));
+				System.out.println(adresse+" drans btnupdate graph");
+				System.out.println(adresse.getId());
+				
+				adresse.setNomRue(inputRue.getText());
+				adresse.setVille(inputVille.getText());
+				adresse.setPays(inputPays.getText());
+				adresse.setNumRue(Integer.parseInt(inputNumero.getText()));
+				adresse.setCodePostale(Integer.parseInt(inputCodePostal.getText()));
+				//adresse = new Adresse(), , Integer.parseInt(inputCodePostal.getText()),,);
+				
+				
+				model3.setValueAt(inputNumero.getText(), rowIndex, 1);
+				model3.setValueAt(inputRue.getText(), rowIndex, 2);
+				model3.setValueAt(inputVille.getText(), rowIndex, 3);
+				model3.setValueAt(inputCodePostal.getText(), rowIndex, 4);
+				model3.setValueAt(inputPays.getText(), rowIndex, 5);
+				
+				adresseService.update(adresse);
+				JOptionPane.showMessageDialog(null, "Update success");
 			}
 		});
-		table_2.setBounds(0, 0, 1, 1);
+		btnUpdateAdress.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_edit.png"));
+		btnUpdateAdress.setBounds(367, 774, 46, 46);
+		gradient3.add(btnUpdateAdress);
+		
+		JButton btnRemoveAdress = new JButton("");
+		btnRemoveAdress.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_delete.png"));
+		btnRemoveAdress.setBounds(423, 774, 46, 46);
+		gradient3.add(btnRemoveAdress);
+		
+		tableAdress = new JTable();
+		tableAdress.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int rowIndex = tableAdress.getSelectedRow();
+				
+				inputNumero.setText(model3.getValueAt(rowIndex, 1).toString());
+				inputRue.setText(model3.getValueAt(rowIndex, 2).toString());
+				inputVille.setText(model3.getValueAt(rowIndex, 3).toString());
+				inputCodePostal.setText(model3.getValueAt(rowIndex, 4).toString());
+				inputPays.setText(model3.getValueAt(rowIndex, 5).toString());
+			}
+		});
+		tableAdress.setBounds(0, 0, 1, 1);
 		
 		JScrollPane scrollPane_1_1 = new JScrollPane();
 		scrollPane_1_1.setSize(827, 690);
@@ -676,8 +704,8 @@ public class GraphPannel {
 		Object[] column2 = {"Id", "Numéro de rue", "Nom de rue", "Ville", "Code postal", "Pays"};
 		final Object[] row2 = new Object[6];
 		model3.setColumnIdentifiers(column2);
-		table_2.setModel(model3);
-		scrollPane_1_1.setViewportView(table_2);
+		tableAdress.setModel(model3);
+		scrollPane_1_1.setViewportView(tableAdress);
 		
 		
 		if(adresseService.findAll().size() == 0) {
@@ -697,9 +725,9 @@ public class GraphPannel {
 					}
 			}
 
-		JButton boutonValider_1_1 = new JButton("");
-		boutonValider_1_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_add.png"));
-		boutonValider_1_1.addMouseListener(new MouseAdapter() {
+		JButton btnAddAdress = new JButton("");
+		btnAddAdress.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_add.png"));
+		btnAddAdress.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
@@ -745,8 +773,8 @@ public class GraphPannel {
 				}
 			}
 		});
-		boutonValider_1_1.setBounds(311, 774, 46, 46);
-		gradient3.add(boutonValider_1_1);
+		btnAddAdress.setBounds(311, 774, 46, 46);
+		gradient3.add(btnAddAdress);
 		
 		JLabel lblNewLabel_3_1 = new JLabel("Liste d'adresses");
 		lblNewLabel_3_1.setHorizontalAlignment(SwingConstants.CENTER);

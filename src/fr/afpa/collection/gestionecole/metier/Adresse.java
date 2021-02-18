@@ -104,7 +104,7 @@ public class Adresse {
 
 	@Override
 	public String toString() {
-		return "Adresse [numRue=" + numRue + ", nomRue=" + nomRue + ", codePostale=" + codePostale + ", ville=" + ville
+		return "id "+id+" Adresse [numRue=" + numRue + ", nomRue=" + nomRue + ", codePostale=" + codePostale + ", ville=" + ville
 				+ ", pays=" + pays + "]";
 	}
 	

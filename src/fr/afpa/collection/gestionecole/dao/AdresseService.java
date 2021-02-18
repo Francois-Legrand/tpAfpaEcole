@@ -13,7 +13,7 @@ import fr.afpa.collection.gestionecole.metier.Adresse;
 import fr.francois.ecole.bdd.ConnectionUtils;
 
 public class AdresseService implements IDao<Adresse> {
-
+	int adresseId = 0;
 	public List<Adresse> listeAdresse = new ArrayList<Adresse>();
 
 	@Override
@@ -30,39 +30,18 @@ public class AdresseService implements IDao<Adresse> {
 
 			int rowCount = statement.executeUpdate(sqlIntoAdresse);
 
-			String sqlSelectId = "SELECT MAX(id) AS max_id FROM adresse";
+			String sqlSelectId = "SELECT auto_increment AS NEXT_ID FROM `information_schema`.`tables` WHERE table_name = \"adresse\" AND table_schema = \"ecole\"";
 			
-			Statement statement2 = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_READ_ONLY);
+			Statement statement2 = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
 			ResultSet rs = statement2.executeQuery(sqlSelectId);
 			
-			int adresseId = 0;
+			
 			while (rs.next()) {
-
-				adresseId = rs.getInt("max_id");
-
-			}
-
-			if (adresse.getEleveId() != 0) {
-				if (adresseId == 0) {
-					
-					adresseId += 1;
-
-					String sqlIntoEleveAdresse = "Insert into eleveAdresse (eleve_id, adresse_id) values ('"
-							+ adresse.getEleveId() + "','" + adresseId + "')";
-
-					rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
-				} else {
-
-					String sqlIntoEleveAdresse = "Insert into eleveAdresse (eleve_id, adresse_id) values ('"
-							+ adresse.getEleveId() + "','" + adresseId + "')";
-
-					rowCount += statement.executeUpdate(sqlIntoEleveAdresse);
-				}
-
-			}
-
+	            adresseId = rs.getInt("NEXT_ID")-1;
+	            System.out.println(adresseId+ "auto increment");
+	        }
+			
 			System.out.println("Insert adresse Count affected = " + rowCount);
 
 			return true;
@@ -105,13 +84,12 @@ public class AdresseService implements IDao<Adresse> {
 	public boolean update(Adresse adresse) {
 		try {
 			Connection connection = ConnectionUtils.getMyConnection();
-
+			System.out.println(adresse+ "dans update");
 			Statement statement = connection.createStatement();
-
 			String sqlUpdateAdresse = "Update adresse Set nomRue ='" + adresse.getNomRue() + "', numRue ='"
 					+ adresse.getNumRue() + "', codePostale = '" + adresse.getCodePostale() + "', ville = '"
-					+ adresse.getVille() + "', pays = '" + adresse.getPays() + "' Where nomRue = '"
-					+ adresse.getNomRue() + "'";
+					+ adresse.getVille() + "', pays = '" + adresse.getPays() + "' Where id = '"
+					+ adresse.getId() + "'";
 			System.out.println(sqlUpdateAdresse);
 
 			int rowCount = statement.executeUpdate(sqlUpdateAdresse);
