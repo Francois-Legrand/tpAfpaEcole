@@ -153,6 +153,7 @@ public class GraphPannel {
 		gradien.setLayout(null);
 		
 		JLabel labelSudents = new JLabel("CREATION D'UN ETUDIANT");
+		labelSudents.setForeground(Color.WHITE);
 		labelSudents.setFont(new Font("Microsoft JhengHei", Font.BOLD | Font.ITALIC, 18));
 		labelSudents.setHorizontalAlignment(SwingConstants.CENTER);
 		labelSudents.setBounds(0, 23, 1383, 32);
@@ -166,6 +167,7 @@ public class GraphPannel {
 		inputNom.setColumns(10);
 		
 		JLabel labelNom = new JLabel("Nom");
+		labelNom.setForeground(Color.WHITE);
 		labelNom.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelNom.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
 		labelNom.setBounds(0, 130, 170, 50);
@@ -178,6 +180,7 @@ public class GraphPannel {
 		inputPrenom.setColumns(10);
 		
 		JLabel labelDateNaissance = new JLabel("Date de naissance");
+		labelDateNaissance.setForeground(Color.WHITE);
 		labelDateNaissance.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelDateNaissance.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
 		labelDateNaissance.setBounds(0, 307, 170, 50);
@@ -188,6 +191,7 @@ public class GraphPannel {
 		gradien.add(inputDateNaissance);
 		
 		JLabel labelAdress = new JLabel("Adresse");
+		labelAdress.setForeground(Color.WHITE);
 		labelAdress.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelAdress.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
 		labelAdress.setBounds(0, 386, 170, 50);
@@ -213,6 +217,7 @@ public class GraphPannel {
 		gradien.add(comboBoxAdress);
 		
 		JLabel lbSalle = new JLabel("Salle");
+		lbSalle.setForeground(Color.WHITE);
 		lbSalle.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbSalle.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
 		lbSalle.setBounds(0, 463, 167, 50);
@@ -220,6 +225,7 @@ public class GraphPannel {
 		
 		SalleService salleService = new SalleService();
 		
+		int salleNumber = salleService.findAll().size();
 		int[] idListe = new int[3];
 		String[] codeListe = new String[3];
 		int salleId = 0;
@@ -445,6 +451,7 @@ public class GraphPannel {
 		gradien.add(separator);
 		
 		JLabel labelPrenom_1 = new JLabel("Prénom");
+		labelPrenom_1.setForeground(Color.WHITE);
 		labelPrenom_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelPrenom_1.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
 		labelPrenom_1.setBounds(0, 222, 170, 50);
@@ -462,6 +469,7 @@ public class GraphPannel {
 		gradien.add(separator_2_1);
 		
 		JLabel lblNewLabel_3 = new JLabel("Liste des élèves");
+		lblNewLabel_3.setForeground(Color.WHITE);
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 18));
 		lblNewLabel_3.setBounds(499, 77, 884, 42);
@@ -475,6 +483,7 @@ public class GraphPannel {
 		gradient2.setLayout(null);
 		
 		JLabel labelCode = new JLabel("Code");
+		labelCode.setForeground(Color.WHITE);
 		labelCode.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
 		labelCode.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelCode.setBounds(0, 130, 170, 50);
@@ -486,6 +495,7 @@ public class GraphPannel {
 		inputCode.setColumns(10);
 		
 		JLabel labellibelle = new JLabel("Libellé");
+		labellibelle.setForeground(Color.WHITE);
 		labellibelle.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
 		labellibelle.setHorizontalAlignment(SwingConstants.RIGHT);
 		labellibelle.setBounds(0, 222, 170, 50);
@@ -496,20 +506,49 @@ public class GraphPannel {
 		gradient2.add(inputLibelle);
 		inputLibelle.setColumns(10);
 		
-		JButton boutonValider_1 = new JButton("");
-		boutonValider_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_add.png"));
-		boutonValider_1.setBounds(311, 774, 46, 46);
-		gradient2.add(boutonValider_1);
 		
-		JButton btnNewButton_1_1 = new JButton("");
-		btnNewButton_1_1.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_edit.png"));
-		btnNewButton_1_1.setBounds(367, 774, 46, 46);
-		gradient2.add(btnNewButton_1_1);
+		JButton btnUpdSalle = new JButton("");
+		btnUpdSalle.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				int rowIndex = tableSalle.getSelectedRow();
+				
+				Salle salle = salleService.findById(Integer.parseInt(tableSalle.getModel().getValueAt(rowIndex, 0).toString()));
+				System.out.println(salle+" dans btnupdate graph");
+				System.out.println(salle.getId());
+				
+				salle.setCode(inputCode.getText());
+				salle.setLibelle(inputLibelle.getText());
+				
+				
+				model2.setValueAt(inputCode.getText(), rowIndex, 1);
+				model2.setValueAt(inputLibelle.getText(), rowIndex, 2);
+				
+				salleService.update(salle);
+				JOptionPane.showMessageDialog(null, "Update success");
+			}
+		});
+		btnUpdSalle.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_edit.png"));
+		btnUpdSalle.setBounds(367, 774, 46, 46);
+		gradient2.add(btnUpdSalle);
 		
-		JButton btnNewButton_2 = new JButton("");
-		btnNewButton_2.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_delete.png"));
-		btnNewButton_2.setBounds(423, 774, 46, 46);
-		gradient2.add(btnNewButton_2);
+		JButton btnRemoveSalle = new JButton("");
+		btnRemoveSalle.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int rowIndex = tableSalle.getSelectedRow();
+				System.out.println(rowIndex);
+				Salle deleteSalle = salleService.findById(Integer.parseInt(tableSalle.getModel().getValueAt(rowIndex, 0).toString()));
+					deleteSalle.setId(Integer.parseInt(tableSalle.getModel().getValueAt(rowIndex, 0).toString()));
+					model2.removeRow(rowIndex);
+					salleService.delete(deleteSalle);
+					JOptionPane.showMessageDialog(null, "Delete success");
+			}
+		});
+		btnRemoveSalle.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_delete.png"));
+		btnRemoveSalle.setBounds(423, 774, 46, 46);
+		gradient2.add(btnRemoveSalle);
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(68, 761, 404, 2);
@@ -527,6 +566,14 @@ public class GraphPannel {
 		gradient2.add(separator_2_2);
 		
 		tableSalle = new JTable();
+		tableSalle.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int rowIndex = tableSalle.getSelectedRow();
+				inputCode.setText(model2.getValueAt(rowIndex, 1).toString());
+				inputLibelle.setText(model2.getValueAt(rowIndex, 2).toString());
+			}
+		});
 		tableSalle.setBounds(0, 0, 1, 1);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -536,18 +583,77 @@ public class GraphPannel {
 		gradient2.add(scrollPane_1);
 		model2 = new DefaultTableModel();
 		Object[] column1 = {"Id", "Code", "Libellé"};
-		final Object[] row1 = new Object[3];
+		final Object[] rowSalle = new Object[3];
 		model2.setColumnIdentifiers(column1);
 		tableSalle.setModel(model2);
 		scrollPane_1.setViewportView(tableSalle);
 		
+		
+		if(salleService.findAll().size() == 0) {
+			System.out.println(salleService.findAll().size());
+		}else {
+			
+			for(int i = 0; i < salleNumber; i++) {
+				System.out.println(salleService.findAll().get(i).getId());
+				
+						rowSalle[0] = salleService.findAll().get(i).getId();
+						rowSalle[1] = salleService.findAll().get(i).getCode();
+						rowSalle[2] = salleService.findAll().get(i).getLibelle();
+						model2.addRow(rowSalle);
+					}
+			}
+
+		JButton btnAddSalle = new JButton("");
+		btnAddSalle.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					Connection connection = ConnectionUtils.getMyConnection();
+
+					String sqlSelectId = "SELECT auto_increment AS NEXT_ID FROM `information_schema`.`tables` WHERE table_name = \"salle\" AND table_schema = \"ecole\"";
+					
+					Statement statement2 = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+					
+					ResultSet rs = statement2.executeQuery(sqlSelectId);
+					
+					int salleId = 0;
+					while (rs.next()) {
+						
+					    salleId = rs.getInt("NEXT_ID");
+					
+					}
+					
+					String code = inputCode.getText();
+					String libelle = inputLibelle.getText();
+					salleService.create(new Salle( code, libelle));
+					
+					rowSalle[0] = salleId;
+					rowSalle[1] = code;
+					rowSalle[2] = libelle;
+					
+					model2.addRow(rowSalle);
+				} catch (NumberFormatException e1) {
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnAddSalle.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_add.png"));
+		btnAddSalle.setBounds(311, 774, 46, 46);
+		gradient2.add(btnAddSalle);
+		
 		JLabel labelSalle_1 = new JLabel("CREATION DE SALLE");
+		labelSalle_1.setForeground(Color.WHITE);
 		labelSalle_1.setHorizontalAlignment(SwingConstants.CENTER);
 		labelSalle_1.setFont(new Font("Microsoft JhengHei", Font.BOLD | Font.ITALIC, 18));
 		labelSalle_1.setBounds(0, 21, 1383, 32);
 		gradient2.add(labelSalle_1);
 		
 		JLabel lblNewLabel_3_2 = new JLabel("Liste des salles");
+		lblNewLabel_3_2.setForeground(Color.WHITE);
 		lblNewLabel_3_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3_2.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 18));
 		lblNewLabel_3_2.setBounds(499, 78, 884, 42);
@@ -560,12 +666,14 @@ public class GraphPannel {
 		gradient3.setLayout(null);
 		
 		JLabel lbsAdresss = new JLabel("CREATION D'ADRESSE");
+		lbsAdresss.setForeground(Color.WHITE);
 		lbsAdresss.setFont(new Font("Microsoft JhengHei", Font.BOLD | Font.ITALIC, 18));
 		lbsAdresss.setBounds(0, 23, 1383, 32);
 		lbsAdresss.setHorizontalAlignment(SwingConstants.CENTER);
 		gradient3.add(lbsAdresss);
 		
 		JLabel labelPays = new JLabel("Pays");
+		labelPays.setForeground(Color.WHITE);
 		labelPays.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
 		labelPays.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelPays.setBounds(0, 130, 170, 50);
@@ -578,6 +686,7 @@ public class GraphPannel {
 		gradient3.add(inputPays);
 		
 		JLabel labelVille = new JLabel("Ville");
+		labelVille.setForeground(Color.WHITE);
 		labelVille.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
 		labelVille.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelVille.setBounds(0, 222, 170, 50);
@@ -590,6 +699,7 @@ public class GraphPannel {
 		gradient3.add(inputVille);
 		
 		JLabel lblCodePostal = new JLabel("Code Postal");
+		lblCodePostal.setForeground(Color.WHITE);
 		lblCodePostal.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
 		lblCodePostal.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblCodePostal.setBounds(0, 308, 170, 50);
@@ -602,6 +712,7 @@ public class GraphPannel {
 		inputCodePostal.setColumns(10);
 		
 		JLabel labelRue = new JLabel("Rue");
+		labelRue.setForeground(Color.WHITE);
 		labelRue.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
 		labelRue.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelRue.setBounds(0, 386, 170, 50);
@@ -614,6 +725,7 @@ public class GraphPannel {
 		inputRue.setColumns(10);
 		
 		JLabel labelNumero = new JLabel("Numéro");
+		labelNumero.setForeground(Color.WHITE);
 		labelNumero.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
 		labelNumero.setHorizontalAlignment(SwingConstants.RIGHT);
 		labelNumero.setBounds(0, 465, 170, 50);
@@ -695,7 +807,6 @@ public class GraphPannel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int rowIndex = tableAdress.getSelectedRow();
-				
 				inputNumero.setText(model3.getValueAt(rowIndex, 1).toString());
 				inputRue.setText(model3.getValueAt(rowIndex, 2).toString());
 				inputVille.setText(model3.getValueAt(rowIndex, 3).toString());
@@ -710,7 +821,6 @@ public class GraphPannel {
 		scrollPane_1_1.setLocation(535, 130);
 		scrollPane.setBounds(535, 130, 827, 690);
 		
-		
 		gradient3.add(scrollPane_1_1);
 		model3 = new DefaultTableModel();
 		Object[] column2 = {"Id", "Numéro de rue", "Nom de rue", "Ville", "Code postal", "Pays"};
@@ -719,14 +829,11 @@ public class GraphPannel {
 		tableAdress.setModel(model3);
 		scrollPane_1_1.setViewportView(tableAdress);
 		
-		
 		if(adresseService.findAll().size() == 0) {
 			System.out.println(adresseService.findAll().size());
 		}else {
 			
 			for(int i = 0; i < number; i++) {
-				System.out.println(eleveService.findAll().get(i).getId());
-				
 						row[0] = adresseService.findAll().get(i).getId();
 						row[1] = adresseService.findAll().get(i).getNumRue();
 						row[2] = adresseService.findAll().get(i).getNomRue();
@@ -774,13 +881,10 @@ public class GraphPannel {
 					
 					model3.addRow(row2);
 				} catch (NumberFormatException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -789,6 +893,7 @@ public class GraphPannel {
 		gradient3.add(btnAddAdress);
 		
 		JLabel lblNewLabel_3_1 = new JLabel("Liste d'adresses");
+		lblNewLabel_3_1.setForeground(Color.WHITE);
 		lblNewLabel_3_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3_1.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 18));
 		lblNewLabel_3_1.setBounds(499, 78, 884, 42);

@@ -84,8 +84,9 @@ public class SalleService implements IDao<Salle> {
 
 			Statement statement = connection.createStatement();
 			
-			String sqlDeleteSalle = "Delete from salle where code = '" + salle.getId() + "'";
-
+			String sqlDeleteSalle = "Delete from salle where id = '" + salle.getId() + "'";
+			System.out.println(sqlDeleteSalle);
+			
 			int rowCount = statement.executeUpdate(sqlDeleteSalle);
 
 			System.out.println("Delete salle Count affected = " + rowCount);
