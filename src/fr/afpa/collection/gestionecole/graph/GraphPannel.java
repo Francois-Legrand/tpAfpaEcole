@@ -657,7 +657,6 @@ public class GraphPannel {
 				adresse.setNumRue(Integer.parseInt(inputNumero.getText()));
 				adresse.setCodePostale(Integer.parseInt(inputCodePostal.getText()));
 				
-				
 				model3.setValueAt(inputNumero.getText(), rowIndex, 1);
 				model3.setValueAt(inputRue.getText(), rowIndex, 2);
 				model3.setValueAt(inputVille.getText(), rowIndex, 3);
@@ -681,7 +680,6 @@ public class GraphPannel {
 				Adresse deleteAdresse = adresseService.findById(Integer.parseInt(tableAdress.getModel().getValueAt(rowIndex, 0).toString()));
 					deleteAdresse.setId(Integer.parseInt(tableAdress.getModel().getValueAt(rowIndex, 0).toString()));
 					System.out.println(deleteAdresse.getId()+" id de ladresse");
-					
 					model3.removeRow(rowIndex);
 					adresseService.delete(deleteAdresse);
 					JOptionPane.showMessageDialog(null, "Delete success");
@@ -690,8 +688,6 @@ public class GraphPannel {
 		btnRemoveAdress.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_delete.png"));
 		btnRemoveAdress.setBounds(423, 774, 46, 46);
 		
-				
-			
 		gradient3.add(btnRemoveAdress);
 		
 		tableAdress = new JTable();
