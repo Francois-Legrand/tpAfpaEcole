@@ -673,8 +673,25 @@ public class GraphPannel {
 		gradient3.add(btnUpdateAdress);
 		
 		JButton btnRemoveAdress = new JButton("");
+		btnRemoveAdress.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int rowIndex = tableAdress.getSelectedRow();
+				System.out.println(rowIndex);
+				Adresse deleteAdresse = adresseService.findById(Integer.parseInt(tableAdress.getModel().getValueAt(rowIndex, 0).toString()));
+					deleteAdresse.setId(Integer.parseInt(tableAdress.getModel().getValueAt(rowIndex, 0).toString()));
+					System.out.println(deleteAdresse.getId()+" id de ladresse");
+					
+					model3.removeRow(rowIndex);
+					adresseService.delete(deleteAdresse);
+					JOptionPane.showMessageDialog(null, "Delete success");
+			}
+		});
 		btnRemoveAdress.setIcon(new ImageIcon("C:\\Users\\yyper\\Desktop\\ico\\document_delete.png"));
 		btnRemoveAdress.setBounds(423, 774, 46, 46);
+		
+				
+			
 		gradient3.add(btnRemoveAdress);
 		
 		tableAdress = new JTable();
